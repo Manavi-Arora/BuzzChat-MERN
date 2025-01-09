@@ -6,6 +6,5 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: top;
-    background-attachment: fixed;
-    filter: brightness(0.7); /* Increase the brightness (1 is the normal level, 1.2 is 20% brighter) */
+    filter: brightness(0.7); 
 }
