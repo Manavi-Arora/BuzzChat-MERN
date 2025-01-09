@@ -44,7 +44,7 @@ const SignUp = () => {
           Sign Up <span className='text-yellow-500' style={{ textShadow: '2px 2px 5px black, -2px -2px 5px black' }}> BuzzChat</span>
         </h1>
 
-        <form onSubmit={handleSubmit}>
+        <form className="my-2" onSubmit={handleSubmit}>
 
           <div>
             <label className='label p-2'>
@@ -64,7 +64,7 @@ const SignUp = () => {
               <span className='text-base text-black label-text'>Email</span>
             </label>
             <div className="relative">
-              <input type='text' autoComplete="username" placeholder='Enter Email' className='w-full input input-bordered h-10' value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
+              <input type='text' autoComplete="username" placeholder='you@example.com' className='w-full input input-bordered h-10' value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} />
               <div className="absolute right-6 top-1/2 transform -translate-y-1/2 z-10">
                 <Mail color="#fbbf24" />
               </div>
@@ -78,7 +78,7 @@ const SignUp = () => {
             <div className="relative">
               <input
                 type={showPassword ? 'text' : 'password'}
-                placeholder='Enter Password'
+                placeholder='••••••••'
                 className='w-full input input-bordered h-10'
                 autoComplete="current-password"
                 value={formData.password}
@@ -125,7 +125,7 @@ const SignUp = () => {
           </Link>
 
           <div>
-            <button className='btn btn-block btn-sm mt-2 border border-slate-700'>Sign Up</button>
+            <button className='btn btn-block btn-sm mt-2 border border-slate-800'>Sign Up</button>
           </div>
         </form>
       </div>
