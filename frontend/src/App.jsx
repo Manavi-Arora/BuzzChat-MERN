@@ -2,7 +2,7 @@ import React from 'react';
 import './index.css'
 import { useEffect } from "react";
 import Navbar from './components/Navbar';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 import Home from './pages/home/Home';
 import LogIn from './pages/Login/login';
@@ -23,12 +23,13 @@ export default function App() {
 
   return (
     <Router> 
+      <Navbar />
       <div className='h-screen flex items-center justify-center'>
-        <Navbar />
+        
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<LogIn />} />
-          <Route path="/signup" element={<SignUp />} />
+          <Route path="/" element={authUser ? <Home /> : <Navigate to = {"/login"}/>}/>
+          <Route path="/login" element={authUser ? <Navigate to = '/'/> : <LogIn />} />
+          <Route path="/signup" element={authUser ? <Navigate to='/'/>:<SignUp />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/profile" element={<Profile />} />
         </Routes>

@@ -10,11 +10,18 @@ const LogIn = () => {
         password: "",
     });
     const { login, isLoggingIn } = useAuthStore();
-
+    function handleInputErrors() {
+        if (!formData.email || !formData.password) {
+            toast.error("Please fill in all fields");
+            return false;
+        }
+    
+        return true;
+    }
     const handleSubmit = async (e) => {
       e.preventDefault();
-      console.log(formData);
-      login(formData);
+      const isValid = handleInputErrors();
+      if(isValid === true) login(formData);
     };
     const togglePasswordVisibility = () => {
         setShowPassword((prevState) => !prevState);
