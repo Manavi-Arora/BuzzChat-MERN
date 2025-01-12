@@ -4,11 +4,11 @@ import { useState } from "react";
 
 const MessageInput = () => {
   const [message, setMessage] = useState("");
-  const {isMessagesLoading,sendMessage} = useChatStore();
+  const {sendMessage} = useChatStore();
   const handleSubmit = async(e) => {
     e.preventDefault();
     if(!message) return;
-    await sendMessage(message);
+    await sendMessage({text : message});
     setMessage("");
   }
   return (

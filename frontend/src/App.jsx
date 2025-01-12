@@ -19,7 +19,6 @@ export default function App() {
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
-  
 
   return (
     <Router> 

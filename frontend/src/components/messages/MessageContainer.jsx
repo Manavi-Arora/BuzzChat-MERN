@@ -28,8 +28,8 @@ const MessageContainer = () => {
   if (!selectedUser) return <NoChatSelected/>;
   else return (
     <div className='md:min-w-[450px] flex flex-col w-full'>
-					<div className='bg-slate-500 px-4 py-2 mb-2'>
-						<span className='label-text'>To:</span>{" "}
+					<div className='bg-yellow-300 px-4 py-2 mb-2'>
+						<span className=' text-gray-900 label-text'>To:</span>{" "}
 						<span className='text-gray-900 font-bold'>{selectedUser.fullName}</span>
 					</div>
 					<Messages />

@@ -42,7 +42,6 @@ export const useChatStore = create((set, get) => ({
       toast.error(error.response.data.message);
     }
   },
-
   subscribeToMessages: () => {
     const { selectedUser } = get();
     if (!selectedUser) return;

@@ -5,15 +5,16 @@ import { useChatStore } from "../../store/useChatStore";
 import { getRandomEmoji } from "../../lib/emojis";
 
 const Conversations = () => {
-  const{getUsers,users,isUserLoading} = useChatStore()
+  const{getUsers,users,isUsersLoading} = useChatStore()
  
 	useEffect(()=>{
 		getUsers();
-		console.log(users)
 	},[getUsers])
 
+	if(isUsersLoading){
+		return [...Array(1)].map((_, idx) => <SidebarSkeleton key={idx} />)
+	}
 
-	if(isUserLoading) return <SidebarSkeleton/>
   return (
     <div className='py-2 flex flex-col overflow-auto'>
       {users.map((user, idx) => (
