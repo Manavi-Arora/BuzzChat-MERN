@@ -10,8 +10,8 @@ const Message = ({ message }) => {
     const formattedTime = extractTime(message.createdAt);
     const chatClassName = fromMe ? "chat-end" : "chat-start";
     const profilePic = fromMe
-  ? authUser.profilePic || "https://t3.ftcdn.net/jpg/05/00/54/28/360_F_500542898_LpYSy4RGAi95aDim3TLtSgCNUxNlOlcM.jpg"
-  : selectedUser?.profilePic || "https://t3.ftcdn.net/jpg/05/00/54/28/360_F_500542898_LpYSy4RGAi95aDim3TLtSgCNUxNlOlcM.jpg";
+  ? authUser.profilePic || "avatar.jpg"
+  : selectedUser?.profilePic || "avatar.jpg";
 
     const bubbleBgColor = fromMe ? "bg-black-500 text-light" : "bg-yellow-400";
     function extractTime(dateString) {

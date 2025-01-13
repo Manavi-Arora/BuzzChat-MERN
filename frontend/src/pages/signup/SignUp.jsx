@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useAuthStore } from "../../store/useAuthStore"
 import toast from "react-hot-toast";
 
-const SignUp = () => {
+const SignUp = (props) => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
@@ -14,10 +14,10 @@ const SignUp = () => {
     confirmPass: ""
   });
   
-  const { signup, isSigningUp } = useAuthStore();
+  const { signup, isSigningUp} = useAuthStore();
   const togglePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState);
-};
+  };
   const validateForm = () => {
     if (!formData.fullName.trim()) return toast.error("Full name is required");
     if (!formData.email.trim()) return toast.error("Email is required");
@@ -25,19 +25,22 @@ const SignUp = () => {
     if (!formData.password) return toast.error("Password is required");
     if (!formData.confirmPass) return toast.error("Confirm Password is required");
     if (formData.password.length < 8) return toast.error("Password must be at least 8 characters");
-    if (formData.confirmPass != formData.password) return toast.error("Passwords do not match")
+    if (formData.confirmPass != formData.password) return toast.error("Passwords do not match");
+    props.setProgress(20);
     return true;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    props.setProgress(50);
     const isValid = validateForm();
-
+    props.setProgress(70);
     if (isValid === true) signup(formData);
+    props.setProgress(100);
   };
 
   return (
+    
     <div className='flex flex-col items-center justify-center min-w-96 mx-auto'>
       <div className='w-full p-6 rounded-lg shadow-md bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0'>
         <h1 className='text-3xl font-semibold text-center text-gray-800'>

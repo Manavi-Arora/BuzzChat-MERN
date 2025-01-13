@@ -14,7 +14,7 @@ const Conversation = (props) => {
           <div className={`avatar ${classIsOnline}`}>
             <div className='w-12 rounded-full'>
               <img
-                src={props.user.profilePic ? props.user.profilePic : "https://t3.ftcdn.net/jpg/05/00/54/28/360_F_500542898_LpYSy4RGAi95aDim3TLtSgCNUxNlOlcM.jpg"}
+                src={props.user.profilePic ? props.user.profilePic : "avatar.jpg"}
                 alt='user avatar'
               />
             </div>

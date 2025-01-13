@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 body {
-    background: url("/chatBG.jpg");
+    background: url("/chat-bg.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: top;

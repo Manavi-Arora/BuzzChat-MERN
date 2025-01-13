@@ -3,7 +3,7 @@ import { Mail, LockKeyhole, Eye, EyeClosed,Loader } from "lucide-react"
 import { useState } from "react";
 import {useAuthStore} from "../../store/useAuthStore"
 
-const LogIn = () => {
+const LogIn = (props) => {
     const [showPassword, setShowPassword] = useState(false);
     const [formData, setFormData] = useState({
         email: "",
@@ -12,16 +12,18 @@ const LogIn = () => {
     const { login, isLoggingIn } = useAuthStore();
     function handleInputErrors() {
         if (!formData.email || !formData.password) {
-            toast.error("Please fill in all fields");
+            toast.error("All fields are required!");
             return false;
         }
-    
+        props.setProgress(20);
         return true;
     }
     const handleSubmit = async (e) => {
       e.preventDefault();
+      props.setProgress(70);
       const isValid = handleInputErrors();
       if(isValid === true) login(formData);
+      props.setProgress(100);
     };
     const togglePasswordVisibility = () => {
         setShowPassword((prevState) => !prevState);
