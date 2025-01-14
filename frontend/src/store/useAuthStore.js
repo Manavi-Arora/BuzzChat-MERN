@@ -9,6 +9,7 @@ export const useAuthStore = create((set,get) => ({
   isSigningUp: false,
   isLoggingIn: false,
   isUpdatingProfile: false,
+  isUpdatingBio: false,
   isCheckingAuth: true,
   onlineUsers: [],
   socket: null,
@@ -73,6 +74,19 @@ export const useAuthStore = create((set,get) => ({
       toast.error(error.response.data.message);
     } finally {
       set({ isUpdatingProfile: false });
+    }
+  },
+  updateBio: async (data) => {
+    set({ isUpdatingBio: true });
+    try {
+      const res = await axiosInstance.put("/auth/update-bio", data);
+      set({ authUser: res.data });
+      toast.success("Bio updated successfully");
+    } catch (error) {
+      console.log("error in update bio:", error);
+      toast.error(error.response.data.message);
+    } finally {
+      set({ isUpdatingBio: false });
     }
   },
   connectSocket: () => {

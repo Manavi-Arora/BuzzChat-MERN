@@ -32,11 +32,11 @@ export default function App() {
       <div className='h-screen flex items-center justify-center'>
         
         <Routes>
-          <Route path="/" element={authUser ? <Home /> : <Navigate to = "/login"/> }/>
+          <Route path="/" element={authUser ? <Home setProgress = {setProgress}  /> : <Navigate to = "/login"/> }/>
           <Route path="/login" element={authUser ? <Navigate to = '/'/> : <LogIn setProgress = {setProgress} />} />
           <Route path="/signup" element={authUser ? <Navigate to='/'/>:<SignUp setProgress = {setProgress} />} />
           <Route path="/settings" element={<Settings setProgress = {setProgress}/>} />
-          <Route path="/profile" element={authUser ? <Profile /> : <Navigate to="/login" />} />
+          <Route path="/profile" element={authUser ? <Profile setProgress = {setProgress} /> : <Navigate to="/login" /> } />
         </Routes>
         <Toaster />
       </div>
