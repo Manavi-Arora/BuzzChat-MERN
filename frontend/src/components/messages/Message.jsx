@@ -1,7 +1,6 @@
 import { useAuthStore } from "../../store/useAuthStore";
 import { useChatStore } from "../../store/useChatStore";
 import { useState } from "react";
-import { ThumbsUp, Heart } from "lucide-react"; // For reaction icons (feel free to add more)
 
 const Message = ({ message }) => {
   const { authUser } = useAuthStore();
@@ -16,7 +15,7 @@ const Message = ({ message }) => {
     ? authUser.profilePic || "avatar.jpg"
     : selectedUser?.profilePic || "avatar.jpg";
 
-  const bubbleBgColor = fromMe ? "bg-black-500 text-light" : "bg-yellow-400";
+  const bubbleBgColor = fromMe ? "bg-black-500 text-light" : "bg-yellow-400 ";
 
   function extractTime(dateString) {
     const date = new Date(dateString);
@@ -31,6 +30,9 @@ const Message = ({ message }) => {
 
   // Function to handle reaction click
   const handleReactionClick = async (reaction) => {
+    if(reaction == " "){
+      setReaction(null);
+    }
     setReaction(reaction); // Update the reaction state locally for immediate feedback
     await updateReaction({ reaction }); // Call the action to update the reaction in the store and database
     setSelectedMessage(null);
@@ -53,52 +55,78 @@ const Message = ({ message }) => {
       </div>
 
       {message.image && (
-        <img
-          src={message.image}
-          className={`chat-bubble text-white ${bubbleBgColor} p-2 max-w-[200px] sm:max-w-[400px]`}
-        />
+        <>
+          <img
+            src={message.image}
+            className={`chat-bubble text-white ${bubbleBgColor} p-2 max-w-[200px] sm:max-w-[400px]`}
+          />
+          <div className="text-xs text-gray-300">
+            {formattedTime}
+          </div>
+        </>
       )}
 
       {message.text && (
         <div className={`chat-bubble text-white ${bubbleBgColor} pb-2`}>
           {message.text}
+          <div className={`${fromMe ? "text-gray-300" : "text-gray-500" } text-xs flex justify-end`}>
+            {formattedTime}
+          </div>
         </div>
       )}
-      <div className="chat-footer text-md gap-1 flex items-center text-black">
-        <span>{formattedTime}</span>
-        {message.reaction && <span className=" text-xl">{message.reaction}</span>}
+
+      <div className="chat-footer text-md gap-1 flex items-center text-black pt-1">
+        {/* Flex container for the time and reaction */}
+
+        <div className={`flex items-center`}>
+          {/* Display reaction at the start */}
+          {message.reaction && (
+            <span className="text-xl border border-gray-500 rounded-full">
+              {message.reaction}
+            </span>
+          )}
+        </div>
       </div>
+
+
 
 
       {/* If selected, show the reaction options */}
       {!fromMe && selectedMessage && selectedMessage?._id === message._id && (
-        <div className="chat-header">
+        <div className="chat-header ">
           {/* Reaction Options - display only if message is selected */}
-          <div className="flex gap-1 text-xl">
+          <div className="flex gap-0.5 text-xl">
             <button
               onClick={() => handleReactionClick("👍🏻")}
-              className="text-xl"
+              className="text-xl border border-gray-400 rounded-full"
             >
               👍🏻
             </button>
             <button
               onClick={() => handleReactionClick("❤️")}
-              className="text-xl"
+              className="text-xl border border-gray-400 rounded-full"
             >
               ❤️
             </button>
 
             <button
               onClick={() => handleReactionClick("👎🏻")}
-              className="text-xl"
+              className="text-xl border border-gray-400 rounded-full"
             >
               👎🏻
             </button>
             <button
               onClick={() => handleReactionClick("😊")}
-              className="text-xl"
+              className="text-xl border border-gray-400 rounded-full"
             >
               😊
+            </button>
+
+            <button
+              onClick={() => handleReactionClick(" ")}
+              className="text-xl border border-gray-400 rounded-full"
+            >
+              ❌
             </button>
 
           </div>

@@ -13,6 +13,7 @@ export const useAuthStore = create((set,get) => ({
   isCheckingAuth: true,
   onlineUsers: [],
   socket: null,
+  friends : [],
 
   checkAuth: async () => {
     try {
@@ -89,6 +90,42 @@ export const useAuthStore = create((set,get) => ({
       set({ isUpdatingBio: false });
     }
   },
+  addFriend: async (friendId) => {
+    try {
+      const res = await axiosInstance.put("/auth/update-friends", {
+        friendId,
+        action: "add",
+      });
+      set({ authUser: res.data });
+      toast.success("Friend added successfully");
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  },
+
+  // Remove a friend from the user's friends list
+  removeFriend: async (friendId) => {
+    try {
+      const res = await axiosInstance.put("/auth/update-friends", {
+        friendId,
+        action: "remove",
+      });
+      set({ authUser: res.data });
+      toast.success("Friend removed successfully");
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  },
+
+  fetchFriends: async () => {
+    try {
+      const res = await axiosInstance.get("/auth/fetch-friends");
+      set({ friends: res.data });
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  },
+
   connectSocket: () => {
     const { authUser } = get();
     if (!authUser || get().socket?.connected) return;

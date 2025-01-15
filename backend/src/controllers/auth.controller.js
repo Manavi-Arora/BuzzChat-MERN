@@ -146,3 +146,60 @@ export const checkAuth = (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+export const updateFriends = async (req, res) => {
+  const { friendId, action } = req.body;  // Get friendId and action (add/remove) from request body
+
+  if (!friendId || !action) {
+    return res.status(400).json({ message: "Friend ID and action are required" });
+  }
+
+  if (action !== "add" && action !== "remove") {
+    return res.status(400).json({ message: "Invalid action. Use 'add' or 'remove'" });
+  }
+
+  try {
+    const user = await User.findById(req.user._id); // Get current user from JWT (protected route)
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Check if the user is already friends with the given friendId
+    if (action === "add") {
+      if (user.friends.includes(friendId)) {
+        return res.status(400).json({ message: "User is already your friend" });
+      }
+      user.friends.push(friendId); // Add friend
+    } else if (action === "remove") {
+      if (!user.friends.includes(friendId)) {
+        return res.status(400).json({ message: "User is not your friend" });
+      }
+      user.friends = user.friends.filter((id) => id.toString() !== friendId); // Remove friend
+    }
+
+    await user.save();
+    res.status(200).json({ message: "Friends updated successfully", friends: user.friends });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const fetchFriends = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id); // Get current user from JWT (protected route)
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Fetch the friends' details by their user IDs
+    const friends = await User.find({ '_id': { $in: user.friends } });
+
+    res.status(200).json(friends); // Send friends data as the response
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
