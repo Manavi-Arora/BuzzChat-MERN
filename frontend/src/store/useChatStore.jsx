@@ -9,6 +9,7 @@ export const useChatStore = create((set, get) => ({
   selectedUser: null,
   isUsersLoading: false,
   isMessagesLoading: false,
+  selectedMessage: null,
 
   getUsers: async () => {
     set({ isUsersLoading: true });
@@ -64,4 +65,26 @@ export const useChatStore = create((set, get) => ({
   },
 
   setSelectedUser: (selectedUser) => set({ selectedUser }),
+  setSelectedMessage: (selectedMessage) => set({ selectedMessage }),
+
+  updateReaction: async (reactionData) => {
+    const { selectedMessage, messages } = get();
+    if (!selectedMessage) return toast.error("No message selected for reaction.");
+
+    try {
+      const res = await axiosInstance.put(`/messages/reaction/${selectedMessage._id}`, reactionData);
+
+      const updatedMessages = messages.map((message) =>
+        message._id === selectedMessage._id
+          ? { ...message, reaction: res.data.reaction }
+          : message
+      );
+      set({ messages: updatedMessages });
+      toast.success("Reaction updated successfully.");
+    } catch (error) {
+      console.error("Error in updating reaction:", error);
+      toast.error(error.response.data.message);
+    }
+  },
+
 }));
