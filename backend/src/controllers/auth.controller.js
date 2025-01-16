@@ -146,7 +146,6 @@ export const checkAuth = (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
-
 export const updateFriends = async (req, res) => {
   const { friendId, action } = req.body;  // Get friendId and action (add/remove) from request body
 
@@ -160,26 +159,47 @@ export const updateFriends = async (req, res) => {
 
   try {
     const user = await User.findById(req.user._id); // Get current user from JWT (protected route)
-
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Check if the user is already friends with the given friendId
+    const friend = await User.findById(friendId);  // Get the friend by friendId
+    if (!friend) {
+      return res.status(404).json({ message: "Friend not found" });
+    }
+
     if (action === "add") {
+      // Check if the user is already friends with the given friendId
       if (user.friends.includes(friendId)) {
         return res.status(400).json({ message: "User is already your friend" });
       }
-      user.friends.push(friendId); // Add friend
+      if (friend.friends.includes(user._id)) {
+        return res.status(400).json({ message: "Already mutual friends" });
+      }
+
+      // Add friend to both user's friends list
+      user.friends.push(friendId); // Add friend to current user's friends list
+      friend.friends.push(user._id); // Add current user to friend's friends list
+
     } else if (action === "remove") {
+      // Check if the user is already friends with the given friendId
       if (!user.friends.includes(friendId)) {
         return res.status(400).json({ message: "User is not your friend" });
       }
-      user.friends = user.friends.filter((id) => id.toString() !== friendId); // Remove friend
+      if (!friend.friends.includes(user._id)) {
+        return res.status(400).json({ message: "Friend is not your friend" });
+      }
+
+      // Remove friend from both user's friends list
+      user.friends = user.friends.filter((id) => id.toString() !== friendId); // Remove friend from current user's list
+      friend.friends = friend.friends.filter((id) => id.toString() !== user._id); // Remove current user from friend's list
     }
 
+    // Save both user and friend updates
     await user.save();
-    res.status(200).json({ message: "Friends updated successfully", friends: user.friends });
+    await friend.save();
+
+    res.status(200).json({ message: "Friends updated successfully",user });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });

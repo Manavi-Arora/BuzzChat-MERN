@@ -2,25 +2,25 @@ import React, { useState, useEffect } from "react";
 import { UserRoundPlus, UserCheck } from "lucide-react"; // Import the icons
 import { useAuthStore } from "../../store/useAuthStore"; // Import the store to access user data
 
-function Card({ profilePic, fullName, userBio, friendId }) {
-  const { authUser, addFriend, removeFriend, friends } = useAuthStore();
-  const [isFriend, setIsFriend] = useState(false);
+function Card({ profilePic, fullName, userBio, friendId, alreadyFriend }) {
+  const { authUser, addFriend, removeFriend } = useAuthStore();
+  const [isFriend, setIsFriend] = useState(alreadyFriend); // Initialize with the `alreadyFriend` prop
 
-  // Check if the user is a friend when the component mounts or authUser changes
+  // Update isFriend whenever the friends list or the authUser changes
   useEffect(() => {
     if (authUser) {
-      setIsFriend(authUser.friends.includes(friendId)); // Check if this friendId is in the current user's friends list
+      setIsFriend(authUser?.friends?.includes(friendId)); // Check if this friendId is in the current user's friends list
     }
   }, [authUser, friendId]);
 
   const handleFriendClick = async () => {
     if (isFriend) {
-      await removeFriend(friendId); // Remove friend if already a friend
+      await removeFriend(friendId); // Remove friend from the user's list
     } else {
-      await addFriend(friendId); // Add friend if not already a friend
+      await addFriend(friendId); // Add friend to the user's list
     }
 
-    // Toggle the friend status in the UI after the operation
+    // Toggle the friend status after adding/removing the friend
     setIsFriend(!isFriend);
   };
 
