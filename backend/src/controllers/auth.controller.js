@@ -137,7 +137,6 @@ export const updateBio = async (req, res) => {
 };
 
 
-
 export const checkAuth = (req, res) => {
   try {
     res.status(200).json(req.user);
@@ -146,6 +145,7 @@ export const checkAuth = (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
 export const updateFriends = async (req, res) => {
   const { friendId, action } = req.body;  // Get friendId and action (add/remove) from request body
 
@@ -181,6 +181,10 @@ export const updateFriends = async (req, res) => {
       user.friends.push(friendId); // Add friend to current user's friends list
       friend.friends.push(user._id); // Add current user to friend's friends list
 
+      // Save both user and friend documents after adding the friend
+      await user.save();
+      await friend.save();
+
     } else if (action === "remove") {
       // Check if the user is already friends with the given friendId
       if (!user.friends.includes(friendId)) {
@@ -190,21 +194,26 @@ export const updateFriends = async (req, res) => {
         return res.status(400).json({ message: "Friend is not your friend" });
       }
 
-      // Remove friend from both user's friends list
-      user.friends = user.friends.filter((id) => id.toString() !== friendId); // Remove friend from current user's list
-      friend.friends = friend.friends.filter((id) => id.toString() !== user._id); // Remove current user from friend's list
+      // Remove friend from both user's friends list using MongoDB's $pull operator
+      await User.updateOne(
+        { _id: user._id },
+        { $pull: { friends: friendId } }
+      );
+
+      await User.updateOne(
+        { _id: friendId },
+        { $pull: { friends: user._id } }
+      );
     }
 
-    // Save both user and friend updates
-    await user.save();
-    await friend.save();
+    res.status(200).json({ message: "Friends updated successfully", user });
 
-    res.status(200).json({ message: "Friends updated successfully",user });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
 
 export const fetchFriends = async (req, res) => {
   try {

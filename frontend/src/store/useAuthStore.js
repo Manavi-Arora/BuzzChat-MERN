@@ -91,35 +91,39 @@ export const useAuthStore = create((set,get) => ({
       set({ isUpdatingBio: false });
     }
   },// Add a friend to the user's friends list (mutual friendship)
-addFriend: async (friendId) => {
-  try {
-    const res = await axiosInstance.put("/auth/update-friends", {
-      friendId,
-      action: "add",
-    });
-    // Update the authUser with the new friends data (mutual friendship)
-    set({ authUser: res.data.user });
-    toast.success("Friend added successfully");
-  } catch (error) {
-    toast.error(error.response.data.message);
-  }
-},
-
-// Remove a friend from the user's friends list (mutual removal)
-removeFriend: async (friendId) => {
-  try {
-    const res = await axiosInstance.put("/auth/update-friends", {
-      friendId,
-      action: "remove",
-    });
-    // Update the authUser with the new friends data (mutual removal)
-    set({ authUser: res.data.user });
-    toast.success("Friend removed successfully");
-  } catch (error) {
-    toast.error(error.response.data.message);
-  }
-},
-
+  addFriend: async (friendId) => {
+    try {
+      const res = await axiosInstance.put("/auth/update-friends", {
+        friendId,
+        action: "add",
+      });
+      // Update the authUser with the new friends data (mutual friendship)
+      set({ authUser: res.data.user });
+      // Refetch the friends list to ensure it's up to date
+      await get().fetchFriends();
+      toast.success("Friend added successfully");
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  },
+  
+  // Remove a friend from the user's friends list (mutual removal)
+  removeFriend: async (friendId) => {
+    try {
+      const res = await axiosInstance.put("/auth/update-friends", {
+        friendId,
+        action: "remove",
+      });
+      // Update the authUser with the new friends data (mutual removal)
+      set({ authUser: res.data.user });
+      // Refetch the friends list to ensure it's up to date
+      await get().fetchFriends();
+      toast.success("Friend removed successfully");
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  },
+  
 
   fetchFriends: async () => {
     try {

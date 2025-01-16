@@ -5,27 +5,12 @@ import { useAuthStore } from '../../store/useAuthStore';
 
 function Settings() {
   const { users, getUsers } = useChatStore();  // Getting the users from the store
-  const { showFriendsOnly, toggleShowFriendsOnly, friends, fetchFriends, authUser } = useAuthStore();
-
-  const [isFriendsFetched, setIsFriendsFetched] = useState(false);
+  const { showFriendsOnly, toggleShowFriendsOnly,authUser } = useAuthStore();
 
   useEffect(() => {
-    const fetchFriendsData = async () => {
-      await fetchFriends();  // Fetch friends data from the store
-      setIsFriendsFetched(true);  // Once friends are fetched, update state
-    };
-    fetchFriendsData();
-  }, [fetchFriends, authUser, friends]);  // Only run when fetchFriends changes
+   getUsers()
+  }, [authUser]);  
 
-  useEffect(() => {
-    if (isFriendsFetched) {
-      getUsers();  // Fetch users only after friends are fetched
-    }
-  }, [isFriendsFetched]);  // Run when isFriendsFetched changes
-
-  useEffect(() => {
-    console.log(`Friends of ${authUser?.fullName}:`, friends);
-  }, [friends]); // This ensures that friends are logged when the friends list is updated
 
   return (
     <div className="h-full w-full flex justify-center items-center bg-black bg-opacity-40">
@@ -40,7 +25,7 @@ function Settings() {
         <div className="flex items-center mb-4">
           <input
             type="checkbox"
-            checked={!showFriendsOnly}
+            checked={showFriendsOnly}
             onChange={toggleShowFriendsOnly}
             id="showFriendsOnly"
             className="mr-2"
@@ -48,16 +33,16 @@ function Settings() {
           <label htmlFor="showFriendsOnly" className="text-white">Show Friends Only in sidebar</label>
         </div>
 
-        {isFriendsFetched && users.length > 0 ? (
+        {users.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {users.map((user) => (
               <Card
+                friend = {user}
                 key={user._id}
                 profilePic={user.profilePic}
                 fullName={user.fullName}
                 userBio={user.userBio}
                 friendId={user._id}
-                alreadyFriend={friends.includes(user._id)}  // Pass friends status
               />
             ))}
           </div>

@@ -15,6 +15,7 @@ const Conversations = () => {
 
 	useEffect(()=>{
 		fetchFriends();
+		console.log(friends)
 	},[fetchFriends])
 
 	if(isUsersLoading){
@@ -23,7 +24,7 @@ const Conversations = () => {
 
   return (
     <div className='py-2 flex flex-col overflow-auto'>
-	 {showFriendsOnly?users.map((user, idx) => (
+	 {!showFriendsOnly?users.map((user, idx) => (
 				<Conversation
 					key={user._id}
 					user={user}

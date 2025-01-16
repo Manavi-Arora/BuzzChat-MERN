@@ -2,16 +2,16 @@ import React, { useState, useEffect } from "react";
 import { UserRoundPlus, UserCheck } from "lucide-react"; // Import the icons
 import { useAuthStore } from "../../store/useAuthStore"; // Import the store to access user data
 
-function Card({ profilePic, fullName, userBio, friendId, alreadyFriend }) {
+function Card({friend,profilePic, fullName, userBio, friendId}) {
   const { authUser, addFriend, removeFriend } = useAuthStore();
-  const [isFriend, setIsFriend] = useState(alreadyFriend); // Initialize with the `alreadyFriend` prop
+  const [isFriend, setIsFriend] = useState(null); // Initialize with the `alreadyFriend` prop
 
   // Update isFriend whenever the friends list or the authUser changes
   useEffect(() => {
     if (authUser) {
-      setIsFriend(authUser?.friends?.includes(friendId)); // Check if this friendId is in the current user's friends list
+      setIsFriend((authUser?.friends?.includes(friendId) || friend.friends.includes(authUser._id))); // Check if this friendId is in the current user's friends list
     }
-  }, [authUser, friendId]);
+  }, [authUser, friendId,friend]);
 
   const handleFriendClick = async () => {
     if (isFriend) {
