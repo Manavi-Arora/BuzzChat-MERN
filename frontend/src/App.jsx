@@ -11,6 +11,7 @@ import Profile from './pages/profile/Profile';
 import { useAuthStore } from './store/useAuthStore';
 import { Toaster } from "react-hot-toast";
 import LoadingBar from "react-top-loading-bar";
+import Front from './pages/front/Front';
 
 
 export default function App() {
@@ -22,19 +23,20 @@ export default function App() {
 
   return (
     <Router> 
-      <Navbar />
+      
       <LoadingBar
           color="yellow"
           height={2}
           progress={progress}
           onLoaderFinished={() => setProgress(0)}
         />
-      <div className='h-screen flex items-center justify-center'>
-        
+      <div className='flex items-center justify-center overflow-auto'>
+        <Navbar />
         <Routes>
-          <Route path="/" element={authUser ? <Home setProgress = {setProgress}  /> : <Navigate to = "/login"/> }/>
-          <Route path="/login" element={authUser ? <Navigate to = '/'/> : <LogIn setProgress = {setProgress} />} />
-          <Route path="/signup" element={authUser ? <Navigate to='/'/>:<SignUp setProgress = {setProgress} />} />
+          <Route path="/home" element={authUser ? <Home setProgress = {setProgress}  /> : <Navigate to = "/login"/> }/>
+          <Route path="/" element={!authUser?<Front />:<Navigate to = '/home'/>} />
+          <Route path="/login" element={authUser ? <Navigate to = '/home'/> : <LogIn setProgress = {setProgress} />} />
+          <Route path="/signup" element={authUser ? <Navigate to='/home'/>:<SignUp setProgress = {setProgress} />} />
           <Route path="/settings" element={authUser ? <Settings setProgress={setProgress} /> : <Navigate to="/login" />} />
           <Route path="/profile" element={authUser ? <Profile setProgress = {setProgress} /> : <Navigate to="/login" /> } />
         </Routes>
