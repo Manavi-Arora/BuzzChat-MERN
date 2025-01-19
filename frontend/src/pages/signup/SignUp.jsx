@@ -119,7 +119,7 @@ const SignUp = (props) => {
 
       <div className="w-full bg-e0e1e1 lg:w-1/2 flex items-center justify-center">
         <div className="max-w-md w-full p-6">
-          <h1 className="text-3xl font-semibold mb-6 text-black text-center">Sign Up</h1>
+          <h1 className="text-3xl font-semibold mb-6 text-black text-center">Sign Up<span className='text-gray-800' style={{ textShadow: '1px 2px 5px black, 2px 2px 5px #e0e1e1' }}> BuzzChat</span></h1>
           <h1 className="text-sm font-semibold mb-6 text-gray-500 text-center">Join to Our Community with all time access and free </h1>
           <div className="mt-4 flex flex-col lg:flex-row items-center justify-between">
             <div className="w-full lg:w-1/2 mb-2 lg:mb-0">
@@ -176,9 +176,9 @@ const SignUp = (props) => {
                 onClick={togglePasswordVisibility} // Trigger state update on click
               >
                 {showPassword ? (
-                  <EyeClosed color="black" size={"20px"} className="absolute right-3 top-1/2 transform -translate-y-1/2 z-10" />
+                  <EyeClosed size={"20px"} className="absolute right-3 top-1/2 transform -translate-y-1/2 z-10" />
                 ) : (
-                  <Eye color="black" size={"20px"} className="absolute right-3 top-1/2 transform -translate-y-1/2 z-10" />
+                  <Eye size={"20px"} className="absolute right-3 top-1/2 transform -translate-y-1/2 z-10" />
                 )}
               </div>
             </div>

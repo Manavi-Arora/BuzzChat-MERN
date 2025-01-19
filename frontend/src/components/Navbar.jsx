@@ -9,7 +9,7 @@ const Navbar = () => {
   return (
     <header
       className="bg-black border-b border-base-300 fixed w-full top-0 z-40 
-    backdrop-blur-lg bg-base-100/80 opacity-80"
+    backdrop-blur-lg bg-base-100/80"
     >
       <div className="container mx-auto px-4 h-16">
         <div className="flex items-center justify-between h-full">
@@ -23,7 +23,7 @@ const Navbar = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <Link
+            {authUser &&<Link
               to={"/settings"}
               className={`
               btn btn-sm gap-2 transition-colors
@@ -32,7 +32,7 @@ const Navbar = () => {
             >
               <Settings className="w-4 h-4" />
               <span className="hidden sm:inline">Settings</span>
-            </Link>
+            </Link>}
 
             {authUser && (
               <> 

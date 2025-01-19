@@ -15,7 +15,7 @@ const Message = ({ message }) => {
     ? authUser.profilePic || "avatar.jpg"
     : selectedUser?.profilePic || "avatar.jpg";
 
-  const bubbleBgColor = fromMe ? "bg-black-500 text-light" : "bg-yellow-400 ";
+  const bubbleBgColor = fromMe ? "bg-[rgb(46,52,61)] text-light" : "bg-green-200";
 
   function extractTime(dateString) {
     const date = new Date(dateString);

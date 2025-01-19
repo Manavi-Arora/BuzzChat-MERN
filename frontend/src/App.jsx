@@ -4,7 +4,7 @@ import { useEffect,useState } from "react";
 import Navbar from './components/Navbar';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/home/Home';
-import LogIn from './pages/Login/login';
+import LogIn from './pages/login/Login';
 import SignUp from './pages/signup/SignUp';
 import Settings from './pages/settings/Settings';
 import Profile from './pages/profile/Profile';
