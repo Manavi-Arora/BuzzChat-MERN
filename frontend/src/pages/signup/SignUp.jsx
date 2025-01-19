@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Mail, UserRoundPen, Lock, LockKeyhole, EyeClosed, Eye } from "lucide-react"
+import { Mail, UserRoundPen, Lock, LockKeyhole, EyeClosed, Eye,Loader } from "lucide-react"
 import { useState } from "react";
 import { useAuthStore } from "../../store/useAuthStore"
 import toast from "react-hot-toast";
@@ -42,7 +42,7 @@ const SignUp = (props) => {
   return (
 
 
-    <div className="flex h-screen">
+    <div className="flex h-screen gap-10">
 
       <div className="hidden lg:flex items-center justify-center flex-1 bg-e0e1e1 text-black">
         <div className="max-w-md text-center">
@@ -175,9 +175,7 @@ const SignUp = (props) => {
                 className="absolute right-2 top-11 transform -translate-y-1/2 z-10 cursor-pointer"
                 onClick={togglePasswordVisibility} // Trigger state update on click
               >
-                {!formData.password ? (
-                  <Lock color="black" size={"20px"} className="absolute right-3 top-1/2 transform -translate-y-1/2 z-10" />
-                ) : showPassword ? (
+                {showPassword ? (
                   <EyeClosed color="black" size={"20px"} className="absolute right-3 top-1/2 transform -translate-y-1/2 z-10" />
                 ) : (
                   <Eye color="black" size={"20px"} className="absolute right-3 top-1/2 transform -translate-y-1/2 z-10" />
@@ -199,7 +197,12 @@ const SignUp = (props) => {
                 onChange={(e) => setFormData({ ...formData, confirmPass: e.target.value })} />
             </div>
             <div>
-              <button type="submit" className="w-full bg-black text-white p-2 rounded-md hover:bg-gray-800 focus:outline-none focus:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300">Sign Up</button>
+            <button type="submit" disabled={isSigningUp} className="btn btn-block bg-black text-white p-2 rounded-md hover:bg-gray-800 text-center">{isSigningUp ? (
+                                <div className="flex">
+                                    <Loader className="h-5 w-5 animate-spin" />
+                                    Loading...
+                                </div>
+                            ) : "Sign Up"}</button>
             </div>
           </form>
           <div className="mt-4 text-sm text-gray-600 text-center">
