@@ -4,7 +4,6 @@ import { MessagesSquare } from "lucide-react";
 import { useChatStore } from "../../store/useChatStore";
 import { useEffect } from "react";
 import React from 'react';
-import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 
 const NoChatSelected = () => {
@@ -30,7 +29,7 @@ const MessageContainer = () => {
 
 	if (!selectedUser) return (
 		<div className="flex justify-center items-center flex-col mt-16 w-full" style={{ backgroundColor: "hsl(220deg 12.33% 14.31%)" }}>
-			<h2 className="font-thin text-xl text-light tracking-wide">
+			<h2 className="font-thin sm:text-lg md:text-xl text-light tracking-wide">
 				Select the user to start the conversation!
 			</h2>
 
@@ -40,9 +39,15 @@ const MessageContainer = () => {
 	);
 	else return (
 		<div className='md:min-w-[450px] flex flex-col w-full mt-16' style={{ backgroundColor: "hsl(220deg 12.33% 14.31%)" }}>
-			<div className='bg-yellow-300 px-4 py-2 mb-2'>
-				<span className=' text-gray-900 label-text'>To:</span>{" "}
-				<span className='text-gray-900 font-bold'>{selectedUser.fullName}</span>
+			<div className='bg-[#202329] px-4 mb-2 pb-2 flex items-center justify-start gap-3 border-b-2 border-gray-600'>
+			<div className='w-12 h-12 rounded-full avatar'>
+              <img
+                src={selectedUser.profilePic ? selectedUser.profilePic : "avatar.jpg"}
+                alt='user avatar'
+				className="rounded-full"
+              />
+            </div>
+				<span className='text-light font-bold'>{selectedUser.fullName}</span>
 			</div>
 			<Messages />
 			<MessageInput />

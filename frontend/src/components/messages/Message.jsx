@@ -15,7 +15,7 @@ const Message = ({ message }) => {
     ? authUser.profilePic || "avatar.jpg"
     : selectedUser?.profilePic || "avatar.jpg";
 
-  const bubbleBgColor = fromMe ? "bg-[rgb(46,52,61)] text-light" : "bg-green-200";
+  const bubbleBgColor = fromMe ? "bg-[rgb(46,52,61)] text-light" : "bg-[#6c63ff]";
 
   function extractTime(dateString) {
     const date = new Date(dateString);
@@ -55,23 +55,23 @@ const Message = ({ message }) => {
       </div>
 
       {message.image && (
-        <>
+        <div className="chat-bubble flex flex-col items-end">
           <img
             src={message.image}
-            className={`chat-bubble text-white ${bubbleBgColor} p-2 max-w-[200px] sm:max-w-[400px]`}
+            className={`text-white ${bubbleBgColor} px-0 py-1 max-w-[200px] sm:max-w-[400px]`}
           />
           <div className="text-xs text-gray-300">
             {formattedTime}
           </div>
-        </>
+        </div>
       )}
 
       {message.text && (
-        <div className={`chat-bubble text-white ${bubbleBgColor} pb-2`}>
+        <div className={`chat-bubble text-white ${bubbleBgColor} flex justify-center items-center pr-3 gap-6`}>
           {message.text}
-          <div className={`${fromMe ? "text-gray-300" : "text-gray-500" } text-xs flex justify-end`}>
+          <span className={`${fromMe ? "text-gray-300" : "text-white" } text-xs`}>
             {formattedTime}
-          </div>
+          </span>
         </div>
       )}
 

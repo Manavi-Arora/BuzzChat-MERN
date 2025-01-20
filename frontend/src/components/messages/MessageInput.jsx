@@ -53,7 +53,7 @@ const MessageInput = () => {
             <img
               src={imagePreview}
               alt="Preview"
-              className="w-20 h-20 object-cover rounded-lg border border-zinc-700"
+              className="w-40 h-40 object-cover rounded-lg border border-zinc-700 ml-4"
             />
             <button
               onClick={removeImage}
@@ -61,7 +61,7 @@ const MessageInput = () => {
             flex items-center justify-center"
               type="button"
             >
-              <X className="size-3" />
+              <X className="size-4" />
             </button>
           </div>
         </div>
@@ -69,20 +69,20 @@ const MessageInput = () => {
 
 
       <form className="px-4 my-3" onSubmit={handleSendMessage}>
-        <div className="w-full relative flex-1 flex gap-2">
+        <div className="w-full relative flex-1 flex gap-3 justify-between">
           <input
             type="text"
-            className="border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 text-white"
+            className="text-sm rounded-lg block w-2/3 p-2.5 bg-[#2e343d] outline-none md:w-full"
             placeholder="Send a message"
             value={text}
             onChange={(e) => setText(e.target.value)}
           />
           <button
             type="submit"
-            className="absolute right-16 inset-y-0"
+            className="absolute right-36 sm:right-32 md:right-16 inset-y-0"
             disabled={!text.trim() && !imagePreview}
           >
-            <SendHorizontal color="#fbbf24" />
+            <SendHorizontal color="#6c63ff" />
           </button>
 
           <input
@@ -95,7 +95,7 @@ const MessageInput = () => {
 
           <button
             type="button"
-            className={`hidden sm:flex btn btn-circle gap-2
+            className={`btn btn-circle gap-2 bg-[#2e343d]
                      ${imagePreview ? "text-emerald-500" : "text-zinc-400"}`}
             onClick={() => fileInputRef.current?.click()}
           >

@@ -11,3 +11,19 @@
 body{
     background-color: #e0e1e1;
 }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: black;
+  }
+
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 12px;
+  }
+
+
+  *::-webkit-scrollbar-thumb {
+    background-color: #2f2f2f;
+    border: 3px solid #000000;
+  }
