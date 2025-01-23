@@ -72,7 +72,7 @@ const MessageInput = () => {
         <div className="w-full relative flex-1 flex gap-3 justify-between">
           <input
             type="text"
-            className="text-sm rounded-lg block w-2/3 p-2.5 bg-[#2e343d] outline-none md:w-full"
+            className="text-sm rounded-lg block w-2/3 p-2.5 bg-[#383838] outline-none md:w-full"
             placeholder="Send a message"
             value={text}
             onChange={(e) => setText(e.target.value)}
@@ -95,7 +95,7 @@ const MessageInput = () => {
 
           <button
             type="button"
-            className={`btn btn-circle gap-2 bg-[#2e343d]
+            className={`btn btn-circle gap-2 bg-[#383838]
                      ${imagePreview ? "text-emerald-500" : "text-zinc-400"}`}
             onClick={() => fileInputRef.current?.click()}
           >

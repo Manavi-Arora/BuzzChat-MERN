@@ -6,10 +6,10 @@ const Conversation = (props) => {
   const {onlineUsers} = useAuthStore();
   const classIsOnline = onlineUsers.includes(props.user._id)?"online": "";
   const isSelected = selectedUser &&selectedUser._id === props.user._id
-  const classHover = !isSelected ? "hover:bg-[#424b56]" : "";
+  const classHover = !isSelected ? "hover:bg-[#383838]" : "";
     return (
       <>
-        <div className={`flex gap-2 items-center ${classHover} rounded p-2 py-1 cursor-pointer ${isSelected?"bg-[#39414b]":""} `}
+        <div className={`flex gap-2 items-center ${classHover} rounded p-2 py-1 cursor-pointer ${isSelected?"bg-[#454545]":""} `}
         onClick={()=>setSelectedUser(props.user)}>
           <div className={`avatar ${classIsOnline}`}>
             <div className='w-12 rounded-full'>

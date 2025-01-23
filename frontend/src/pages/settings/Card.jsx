@@ -46,9 +46,9 @@ function Card({friend,profilePic, fullName, userBio, friendId}) {
         />
       </figure>
 
-      <div className="text-center text-black">
-        <h3 className="text-xl font-semibold">{fullName}</h3>
-        <p className="text-sm text-gray-300 mt-2">{userBio || "No bio available"}</p>
+      <div className="text-center">
+        <h3 className="text-xl font-semibold text-gray-200">{fullName}</h3>
+        <p className="text-sm text-gray-400 mt-2">{userBio || "No bio available"}</p>
       </div>
     </div>
   );

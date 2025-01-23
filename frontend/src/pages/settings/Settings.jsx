@@ -13,11 +13,12 @@ function Settings() {
 
 
   return (
-    <div className="h-full w-full flex justify-center items-center bg-black bg-opacity-40">
-      <div className="w-4/5 h-4/5 p-6 space-y-6 bg-white/30 backdrop-blur-md rounded-lg overflow-y-auto">
+    <div className="h-screen w-full bg-[#2c2c2c]">
+    <div className="h-full w-full flex justify-center items-center bg-[#2c2c2c] bg-opacity-40">
+      <div className="w-4/5 h-4/5 p-6 space-y-6 bg-white/10 backdrop-blur-md rounded-lg overflow-y-auto">
         <h1
           style={{ textShadow: '2px 2px 4px white' }}
-          className="text-3xl p-2 font-bold text-black z-10 text-center shadow-[2px_2px_4px_black]"
+          className="text-sm sm:text-3xl p-2 font-sans font-bold text-black z-10 text-center shadow-[2px_2px_4px_black]"
         >
           FRIEND SUGGESTIONS
         </h1>
@@ -30,7 +31,7 @@ function Settings() {
             id="showFriendsOnly"
             className="mr-2"
           />
-          <label htmlFor="showFriendsOnly" className="text-white">Show Friends Only in sidebar</label>
+          <label htmlFor="showFriendsOnly" className="text-light">Show Friends Only in sidebar</label>
         </div>
 
         {users.length > 0 ? (
@@ -50,6 +51,7 @@ function Settings() {
           <p className="text-white text-center">No users found.</p>
         )}
       </div>
+    </div>
     </div>
   );
 }

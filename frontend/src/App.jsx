@@ -25,7 +25,7 @@ export default function App() {
     <Router> 
       
       <LoadingBar
-          color="yellow"
+          color="#6c63ff"
           height={2}
           progress={progress}
           onLoaderFinished={() => setProgress(0)}

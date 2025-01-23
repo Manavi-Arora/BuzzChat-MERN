@@ -28,7 +28,7 @@ const MessageContainer = () => {
 	}, [setSelectedUser])
 
 	if (!selectedUser) return (
-		<div className="flex justify-center items-center flex-col mt-16 w-full" style={{ backgroundColor: "hsl(220deg 12.33% 14.31%)" }}>
+		<div className="flex justify-center items-center flex-col mt-16 w-full" style={{ backgroundColor: "#2c2c2c" }}>
 			<h2 className="font-thin sm:text-lg md:text-xl text-light tracking-wide">
 				Select the user to start the conversation!
 			</h2>
@@ -38,8 +38,8 @@ const MessageContainer = () => {
 
 	);
 	else return (
-		<div className='md:min-w-[450px] flex flex-col w-full mt-16' style={{ backgroundColor: "hsl(220deg 12.33% 14.31%)" }}>
-			<div className='bg-[#202329] px-4 mb-2 pb-2 flex items-center justify-start gap-3 border-b-2 border-gray-600'>
+		<div className='md:min-w-[450px] flex flex-col w-full mt-16' style={{ backgroundColor: "#2c2c2c" }}>
+			<div className='bg-[#2c2c2c] px-4 mb-2 py-2 flex items-center justify-start gap-3 border-b-2 border-black'>
 			<div className='w-12 h-12 rounded-full avatar'>
               <img
                 src={selectedUser.profilePic ? selectedUser.profilePic : "avatar.jpg"}

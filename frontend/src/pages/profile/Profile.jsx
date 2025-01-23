@@ -34,12 +34,11 @@ const Profile = (props) => {
 
 
   return (
-    <div className="h-auto w-screen mt-2 ">
-      <div className="max-w-2xl mx-auto ">
-        <div className="bg-base-300 mt-10 rounded-xl p-4 backdrop-filter backdrop-blur-md bg-opacity-20">
+    <div className="h-screen w-screen bg-[#2c2c2c] flex justify-center items-center">
+      <div className="min-w-5/12 w-5/12">
+        <div className="mt-16 rounded-xl p-4 bg-[#454545]">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-black">PROFILE</h1>
-            <p className="mt-2 text-black">Your profile information</p>
+            <h1 className="md:text-2xl font-bold text-light mb-1">PROFILE</h1>
           </div>
 
           {/* avatar upload section */}
@@ -72,14 +71,14 @@ const Profile = (props) => {
                 />
               </label>
             </div>
-            <span className="text-sm text-black">
+            <span className="text-sm text-light">
               {isUpdatingProfile || isUpdatingBio ? "Uploading..." : "Click the camera icon or change user bio to update your profile"}
             </span>
           </div>
 
           <div className="space-y-2">
             <div className="space-y-1">
-              <div className="text-md text-black flex items-center gap-2">
+              <div className="text-md text-light flex items-center gap-2">
                 <User className="w-4 h-4" />
                 Full Name
               </div>
@@ -87,7 +86,7 @@ const Profile = (props) => {
             </div>
 
             <div className="space-y-2">
-              <div className="text-md text-black flex items-center gap-2">
+              <div className="text-md text-light flex items-center gap-2">
                 <Mail className="w-4 h-4" />
                 Email Address
               </div>
@@ -96,27 +95,27 @@ const Profile = (props) => {
           </div>
 
           <div className="space-y-2">
-            <div className="text-md text-black flex items-center gap-2 mt-2">
+            <div className="text-md text-light flex items-center gap-2 mt-2">
               <Biohazard className="w-4 h-4" />
               Bio
             </div>
-            <div className="p-2 bg-base-200 rounded-lg flex items-center">
+            <div className="p-2 bg-base-200 rounded-lg flex items-center justify-center">
               <textarea
-                className="w-full h-8 resize-none outline-none" // Fixed height to ensure single line
+                className="w-full h-8 resize-none outline-none pl-3 bg-transparent" // Fixed height to ensure single line
                 value={userBio}
                 onChange={(e) => { setBio(e.target.value) }}
                 rows={1} // Ensures it's a single line (but the height is fixed)
                 placeholder="Type your bio"
               />
               <Upload
-                className="cursor-pointer text-yellow-500 ml-2" // Add left margin to space out the icon
+                className="cursor-pointer ml-2" // Add left margin to space out the icon
                 onClick={handleBioSubmit}
               />
             </div>
           </div>
 
           <div className="space-y-2">
-            <div className="text-md text-black flex items-center gap-2 mt-2">
+            <div className="text-md text-light flex items-center gap-2 mt-2">
               <Info className="w-4 h-4" />
               Account Information
             </div>

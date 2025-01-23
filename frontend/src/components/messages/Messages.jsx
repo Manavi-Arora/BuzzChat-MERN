@@ -28,7 +28,7 @@ const Messages = () => {
 						<Message message={message} />
 					</div>
 				))}
-      {isMessagesLoading && [...Array(5)].map((_, idx) => <MessageSkeleton key={idx} />)}
+      {isMessagesLoading &&messages.length > 0 && [...Array(5)].map((_, idx) => <MessageSkeleton key={idx} />)}
 			{!isMessagesLoading && messages.length === 0 && (
          <div className="flex flex-col gap-5 justify-center items-center h-full">
           <p className=" font-thin text-xl text-light tracking-wide" >No messages yet!</p>

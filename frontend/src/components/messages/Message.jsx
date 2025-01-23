@@ -55,10 +55,10 @@ const Message = ({ message }) => {
       </div>
 
       {message.image && (
-        <div className="chat-bubble flex flex-col items-end">
+        <div className={`chat-bubble flex flex-col items-end p-2 ${bubbleBgColor}`}>
           <img
             src={message.image}
-            className={`text-white ${bubbleBgColor} px-0 py-1 max-w-[200px] sm:max-w-[400px]`}
+            className={`text-white ${bubbleBgColor} max-w-[200px] sm:max-w-[400px]`}
           />
           <div className="text-xs text-gray-300">
             {formattedTime}
