@@ -5,13 +5,13 @@ import { UsersRound } from "lucide-react";
 import NewGroupModal from './NewGroupModel';
 import { useAuthStore } from "../../store/useAuthStore";
 import '../../App.css';
-import toast from 'react-hot-toast';
 
 const Sidebar = () => {
   const { fetchUserGroups, createGroup } = useAuthStore();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [groups, setGroups] = useState([]);
 
+  const [isLoading, setIsLoading] = useState(true);
   // Open modal
   const handleNewGroupClick = () => {
     setIsModalOpen(true);
@@ -22,10 +22,15 @@ const Sidebar = () => {
     setIsModalOpen(false);
   };
 
-  // You can add fetching user groups logic here if needed
-  // useEffect(() => {
-  //   fetchUserGroups();  // Fetch groups when component mounts
-  // }, []);
+  useEffect(() => {
+    const getGroups = async () => {
+      const groupsData = await fetchUserGroups(); // Fetch groups
+      setGroups(groupsData); // Update the groups state with the fetched data
+      setIsLoading(false); // Set loading state to false once data is fetched
+    };
+
+    getGroups(); // Call the function to fetch groups on component mount
+  }, [createGroup, fetchUserGroups,isModalOpen]);
 
   return (
     <div className='border-r border-black p-3 flex flex-col sidebar mt-16 w-1/3' style={{ backgroundColor: "#2c2c2c" }}>
@@ -39,14 +44,34 @@ const Sidebar = () => {
         </div>
       </div>
       <SearchInput />
-      <Conversations /> {/* Pass groups to Conversations component */}
-
-      {/* Conditionally render the NewGroupModal */}
+      {!isLoading && groups &&
+        <div className="users-cards sm:pl-1.5 mt-2 mb-2">
+          {groups.map((group) => {
+            return (
+              <>
+                <h3 className='text-white font-sans sm:pl-1.5 mt-2 mb-2 sm:text-xl sm:font-bold'>Your Groups</h3>
+                <div className="w-full flex items-center overflow-y-scroll cursor-pointer"> 
+                  <div className="avatar flex items-center gap-2.5 "> 
+                    <div className="w-14 h-14 rounded-full">
+                      <img
+                        src={group.profilePic ? group.profilePic : "group_profile.png"}
+                        alt="user avatar"
+                      />
+                    </div>
+                    <p className="md:font-semibold text-light hidden sm:block">{group.name}</p>
+                  </div>
+                </div>
+              </>
+            );
+          })}
+        </div>
+      }
+      <Conversations /> 
       {isModalOpen && (
         <NewGroupModal
           isOpen={isModalOpen}
           onClose={closeModal}
-          createGroup={createGroup} // Pass createGroup function
+          createGroup={createGroup} 
         />
       )}
     </div>

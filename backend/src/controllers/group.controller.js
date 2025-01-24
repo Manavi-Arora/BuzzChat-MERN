@@ -3,10 +3,14 @@ import Group from "../models/group.model.js";
 
 export const createGroup = async (req, res) => {
   const { name, description, members } = req.body;
-
+  const creatorId = req.user._id;
   if (!members || members.length === 0) {
     return res.status(400).json({ message: "Group must have at least one member." });
   }
+  if (!members.includes(creatorId)) {
+    members.push(creatorId);
+  }
+
 
   try {
     const newGroup = new Group({

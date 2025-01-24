@@ -158,7 +158,7 @@ export const useAuthStore = create((set,get) => ({
 
   createGroup : async (groupData) => {
     try {
-      const response = await axiosInstance.post('/api/create-group', groupData, {
+      const response = await axiosInstance.post('/auth/create-group', groupData, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`, // if you use token-based authentication
         },
@@ -174,7 +174,7 @@ export const useAuthStore = create((set,get) => ({
   },
   fetchUserGroups: async () => {
     try {
-      const response = await axiosInstance.get('/api/fetch-groups', {
+      const response = await axiosInstance.get('/auth/fetch-groups', {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`, // if you use token-based authentication
         },

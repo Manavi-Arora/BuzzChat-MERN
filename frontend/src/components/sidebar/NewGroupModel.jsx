@@ -48,11 +48,9 @@ const NewGroupModal = ({ isOpen, onClose, createGroup }) => {
       const groupData = { name: groupName, members: selectedMembers };
       const newGroup = await createGroup(groupData);
       console.log("New group created:", newGroup);
-      toast.success("Group created successfully!");
       onClose(); // Close the modal after group creation
     } catch (error) {
       console.error("Error creating group:", error);
-      toast.error("Failed to create group");
     }
   };
 
@@ -60,9 +58,9 @@ const NewGroupModal = ({ isOpen, onClose, createGroup }) => {
   const conversationList = users;
 
   return (
-    <div className="modal-overlay">
+    <div className="modal-overlay mt-2">
       <div className="modal-content">
-        <h2 className="text-center text-xl font-semibold mb-4">Create New Group</h2>
+        <h2 className="text-center text-white md:text-xl font-semibold mb-4">Create New Group</h2>
 
         {/* Group name input */}
         <input
@@ -70,7 +68,7 @@ const NewGroupModal = ({ isOpen, onClose, createGroup }) => {
           value={groupName}
           onChange={(e) => setGroupName(e.target.value)}
           placeholder="Enter group name"
-          className="w-full p-3 rounded-md mb-4 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full p-3 rounded-md mb-4 bg-[#383838] outline-none"
         />
         <div className="flex justify-center gap-2">
           <button

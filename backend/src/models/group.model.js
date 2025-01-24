@@ -9,6 +9,10 @@ const groupSchema = new mongoose.Schema({
       type: String,
       default: "",
     },
+    profilePic:{
+      type: String,
+      default: "",
+    },
     members: [
       {
         type: mongoose.Schema.Types.ObjectId,
