@@ -1,7 +1,6 @@
 import express from "express";
 import { protectRoute } from "../middleware/auth.middleware.js";
 import { getUsersForSidebar,getMessages,sendMessages,updateReaction } from "../controllers/message.controller.js";
-import {getGroupMessages,sendGroupMessage,updateGroupReaction} from "../controllers/group.controller.js"
 
 
 const router = express.Router();
@@ -13,11 +12,11 @@ router.put("/reaction/:messageId", protectRoute, updateReaction);
 
 
 // Route to get all messages for a specific group
-router.get("/groups/get/:groupId",protectRoute, getGroupMessages);
+//router.get("/groups/get/:groupId",protectRoute, getGroupMessages);
 
 // Route to send a new message to a group
-router.post("/groups/send/:groupId",protectRoute, sendGroupMessage);
-router.put("/groups/reaction/:messageId", protectRoute, updateGroupReaction);
+//router.post("/groups/send/:groupId",protectRoute, sendGroupMessage);
+//router.put("/groups/reaction/:messageId", protectRoute, updateGroupReaction);
 
 export default router;
 /*POST is used when you're creating a new resource or performing an action 

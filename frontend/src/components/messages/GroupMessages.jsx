@@ -2,16 +2,18 @@ import { useEffect, useRef } from "react";
 import GroupMessage from "./GroupMessage";
 import MessageSkeleton from "./MessageSkeleton";
 import { useGroupStore } from "../../store/useGroupStore";
+import { useAuthStore } from "../../store/useAuthStore";
 
 
 const GroupMessages = () => {
   const {fetchGroupMessages,selectedGroup,groupMessages,isMessagesLoading,sendGroupMessage} = useGroupStore();
+  const {authUser} = useAuthStore();
 
   useEffect(() => {
     if (selectedGroup?._id) {
       fetchGroupMessages(selectedGroup._id);
     } 
-  }, [selectedGroup,fetchGroupMessages,sendGroupMessage]);  // Trigger when selectedGroup changes
+  }, [selectedGroup,fetchGroupMessages,sendGroupMessage,authUser]);  
 
   const lastMessageRef = useRef();
   useEffect(() => {

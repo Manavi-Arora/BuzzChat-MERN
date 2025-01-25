@@ -5,46 +5,48 @@ import { useAuthStore } from "./useAuthStore";
 
 
 export const useGroupStore = create((set, get) => ({
-
+    groupData : null,
     groupMessages: [],
-    selectedGroup: [],
+    selectedGroup: null,
     isGroupsLoading: false,
     selectedMessage: null,
     isMessagesLoading: false,
+    isUpdatingGroupProfile: false,
+    isUpdatingGroupDesc: false,
 
-    setSelectedGroup: (selectedGroup) => set({ selectedGroup }),
+    setSelectedGroup: (group) => set({ selectedGroup : group}),
     setSelectedMessage: (selectedMessage) => set({ selectedMessage }),
 
     updateReaction: async (reactionData) => {
         const { selectedMessage, groupMessages } = get();  // Get the selected message and the messages list from the state
         if (!selectedMessage) return toast.error("No message selected for reaction.");  // Error if no message is selected
-        
+
         try {
-          // Make a PUT request to the backend to update the reaction on the selected message
-          const res = await axiosInstance.put(`/messages/groups/reaction/${selectedMessage._id}`, reactionData);
-          
-          // Update the local state by replacing the reaction on the selected message
-          const updatedMessages = groupMessages.map((message) =>
-            message._id === selectedMessage._id
-              ? { ...message, reaction: res.data.reaction }  // Replace the reaction of the selected message with the updated one
-              : message
-          );
-      
-          // Update the state with the new messages list
-          set({ groupMessages: updatedMessages });
-          
-          // Show a success toast
-          toast.success("Reaction updated successfully.");
+            // Make a PUT request to the backend to update the reaction on the selected message
+            const res = await axiosInstance.put(`/groups/reaction/${selectedMessage._id}`, reactionData);
+
+            // Update the local state by replacing the reaction on the selected message
+            const updatedMessages = groupMessages.map((message) =>
+                message._id === selectedMessage._id
+                    ? { ...message, reaction: res.data.reaction }  // Replace the reaction of the selected message with the updated one
+                    : message
+            );
+
+            // Update the state with the new messages list
+            set({ groupMessages: updatedMessages });
+
+            // Show a success toast
+            toast.success("Reaction updated successfully.");
         } catch (error) {
-          console.error("Error in updating reaction:", error);
-          // Show an error toast with the backend message
-          toast.error(error.response?.data?.message || "Error updating reaction");
+            console.error("Error in updating reaction:", error);
+            // Show an error toast with the backend message
+            toast.error(error.response?.data?.message || "Error updating reaction");
         }
-      },
-      
+    },
+
     createGroup: async (groupData) => {
         try {
-            const response = await axiosInstance.post('/auth/create-group', groupData, {
+            const response = await axiosInstance.post('/groups/create-group', groupData, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`, // if you use token-based authentication
                 },
@@ -60,7 +62,7 @@ export const useGroupStore = create((set, get) => ({
     },
     fetchUserGroups: async () => {
         try {
-            const response = await axiosInstance.get('/auth/fetch-groups', {
+            const response = await axiosInstance.get('/groups/fetch-groups', {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`, // if you use token-based authentication
                 },
@@ -76,30 +78,30 @@ export const useGroupStore = create((set, get) => ({
 
 
     fetchGroupMessages: async (groupId) => {
-        set({isMessagesLoading:true});
+        set({ isMessagesLoading: true });
         try {
-           
+
             const token = localStorage.getItem('token'); // Assuming you use token-based authentication
 
-            const response = await axiosInstance.get(`/messages/groups/get/${groupId}`, {
+            const response = await axiosInstance.get(`/groups/get/${groupId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            set({groupMessages : response.data});
+            set({ groupMessages: response.data });
             return response.data; // Return the fetched messages
         } catch (error) {
             console.error("Error fetching group messages:", error);
             return null; // You can handle errors appropriately here
         }
-        finally{
-            set({isMessagesLoading:false});
+        finally {
+            set({ isMessagesLoading: false });
         }
     },
 
     sendGroupMessage: async (groupId, senderId, text, image) => {
         try {
-            const token = localStorage.getItem('token'); // Assuming you use token-based authentication
+            const token = localStorage.getItem('token');
 
             // Prepare the message data
             const messageData = {
@@ -109,7 +111,7 @@ export const useGroupStore = create((set, get) => ({
             };
 
             // Send the message to the backend
-            const response = await axiosInstance.post(`/messages/groups/send/${groupId}`, messageData, {
+            const response = await axiosInstance.post(`/groups/send/${groupId}`, messageData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -121,5 +123,72 @@ export const useGroupStore = create((set, get) => ({
             return null; // You can handle errors appropriately here
         }
     },
+
+    updateGroupProfilePic: async (profilePicData) => {
+        const { selectedGroup } = get();  // Get selectedGroup from state
+        set({ isUpdatingGroupProfile: true });
+        
+        if (!selectedGroup) {
+            return toast.error("No group selected for profile picture update.");
+        }
+    
+        try {
+            const response = await axiosInstance.put(`/groups/update-GroupProfile/${selectedGroup._id}`, profilePicData);
+    
+            // Update selectedGroup profilePic
+            set({ 
+                selectedGroup: { 
+                    ...selectedGroup, 
+                    profilePic: response.data.profilePic 
+                } 
+            });
+    
+            toast.success("Group profile picture updated successfully.");
+        } catch (error) {
+            console.error("Error in updating group profile picture:", error);
+            toast.error(error.response?.data?.message || "Error updating group profile picture.");
+        } finally {
+            set({ isUpdatingGroupProfile: false });
+        }
+    },
+    updateGroupDescription: async (descriptionData) => {
+        const { selectedGroup } = get();  // Get selectedGroup from state
+        set({ isUpdatingGroupDescription: true });
+    
+        if (!selectedGroup) {
+            return toast.error("No group selected for description update.");
+        }
+    
+        try {
+            const response = await axiosInstance.put(`/groups/update-GroupDesc/${selectedGroup._id}`, descriptionData);
+    
+            // Update selectedGroup description
+            set({ 
+                selectedGroup: { 
+                    ...selectedGroup, 
+                    description: response.data.description 
+                } 
+            });
+    
+            toast.success("Group description updated successfully.");
+        } catch (error) {
+            console.error("Error in updating group description:", error);
+            toast.error(error.response?.data?.message || "Error updating group description.");
+        } finally {
+            set({ isUpdatingGroupDescription: false });
+        }
+    },
+
+    fetchGroupWithMembers : async () => {
+        const { selectedGroup,groupData } = get();
+        try {
+          const response = await axiosInstance.get(`/groups/get-membersInfo/${selectedGroup._id}`);
+          set({groupData : response.data}) ;
+      
+        } catch (error) {
+          console.error("Error fetching group with members:", error);
+        }
+      },
+    
 
 }))

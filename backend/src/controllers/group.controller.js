@@ -212,3 +212,23 @@ export const updateGroupDescription = async (req, res) => {
   }
 };
 
+export const getGroupWithMembers = async (req, res) => {
+  try {
+    const groupId = req.params.groupId;
+
+    // Find the group by its ID and populate members with their fullName and profilePic
+    const group = await Group.findById(groupId)
+      .populate('members', 'fullName profilePic'); // Populate members with fullName and profilePic
+
+    if (!group) {
+      return res.status(404).json({ message: "Group not found" });
+    }
+
+    res.status(200).json(group); // Send the group details along with populated members
+  } catch (error) {
+    console.log("Error in retrieving group with members:", error.message);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+

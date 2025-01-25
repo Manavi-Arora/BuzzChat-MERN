@@ -12,10 +12,12 @@ import { useAuthStore } from './store/useAuthStore';
 import { Toaster } from "react-hot-toast";
 import LoadingBar from "react-top-loading-bar";
 import Front from './pages/front/Front';
-
+import { useGroupStore } from './store/useGroupStore';
+import GroupProfile from './pages/groupProfile/GroupProfile';
 
 export default function App() {
   const {authUser,checkAuth} = useAuthStore();
+  const {selectedGroup} = useGroupStore();
   const [progress, setProgress] = useState(0);
   useEffect(() => {
     checkAuth();
@@ -39,6 +41,7 @@ export default function App() {
           <Route path="/signup" element={authUser ? <Navigate to='/home'/>:<SignUp setProgress = {setProgress} />} />
           <Route path="/settings" element={authUser ? <Settings setProgress={setProgress} /> : <Navigate to="/login" />} />
           <Route path="/profile" element={authUser ? <Profile setProgress = {setProgress} /> : <Navigate to="/login" /> } />
+          <Route path="/group-profile" element={authUser ? <GroupProfile setProgress = {setProgress} /> : <Navigate to="/login" /> } />
         </Routes>
         <Toaster />
       </div>
