@@ -1,0 +1,125 @@
+import { create } from "zustand";
+import toast from "react-hot-toast";
+import { axiosInstance } from "../lib/axios";
+import { useAuthStore } from "./useAuthStore";
+
+
+export const useGroupStore = create((set, get) => ({
+
+    groupMessages: [],
+    selectedGroup: [],
+    isGroupsLoading: false,
+    selectedMessage: null,
+    isMessagesLoading: false,
+
+    setSelectedGroup: (selectedGroup) => set({ selectedGroup }),
+    setSelectedMessage: (selectedMessage) => set({ selectedMessage }),
+
+    updateReaction: async (reactionData) => {
+        const { selectedMessage, groupMessages } = get();  // Get the selected message and the messages list from the state
+        if (!selectedMessage) return toast.error("No message selected for reaction.");  // Error if no message is selected
+        
+        try {
+          // Make a PUT request to the backend to update the reaction on the selected message
+          const res = await axiosInstance.put(`/messages/groups/reaction/${selectedMessage._id}`, reactionData);
+          
+          // Update the local state by replacing the reaction on the selected message
+          const updatedMessages = groupMessages.map((message) =>
+            message._id === selectedMessage._id
+              ? { ...message, reaction: res.data.reaction }  // Replace the reaction of the selected message with the updated one
+              : message
+          );
+      
+          // Update the state with the new messages list
+          set({ groupMessages: updatedMessages });
+          
+          // Show a success toast
+          toast.success("Reaction updated successfully.");
+        } catch (error) {
+          console.error("Error in updating reaction:", error);
+          // Show an error toast with the backend message
+          toast.error(error.response?.data?.message || "Error updating reaction");
+        }
+      },
+      
+    createGroup: async (groupData) => {
+        try {
+            const response = await axiosInstance.post('/auth/create-group', groupData, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`, // if you use token-based authentication
+                },
+            });
+
+            console.log('Group created successfully:', response.data.group);
+            toast.success('Group created successfully');
+            return response.data.group;
+        } catch (error) {
+            console.error('Error creating group:', error.response?.data?.message || error.message);
+            toast.error('Error creating group');
+        }
+    },
+    fetchUserGroups: async () => {
+        try {
+            const response = await axiosInstance.get('/auth/fetch-groups', {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`, // if you use token-based authentication
+                },
+            });
+            set({ groups: response.data.groups })
+            console.log('Fetched groups successfully:', response.data.groups);
+            return response.data.groups;
+        } catch (error) {
+            console.error('Error fetching groups:', error.response?.data?.message || error.message);
+            toast.error('Error fetching groups');
+        }
+    },
+
+
+    fetchGroupMessages: async (groupId) => {
+        set({isMessagesLoading:true});
+        try {
+           
+            const token = localStorage.getItem('token'); // Assuming you use token-based authentication
+
+            const response = await axiosInstance.get(`/messages/groups/get/${groupId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            set({groupMessages : response.data});
+            return response.data; // Return the fetched messages
+        } catch (error) {
+            console.error("Error fetching group messages:", error);
+            return null; // You can handle errors appropriately here
+        }
+        finally{
+            set({isMessagesLoading:false});
+        }
+    },
+
+    sendGroupMessage: async (groupId, senderId, text, image) => {
+        try {
+            const token = localStorage.getItem('token'); // Assuming you use token-based authentication
+
+            // Prepare the message data
+            const messageData = {
+                senderId,
+                text: text || undefined,  // If text is empty, don't send it
+                image: image || undefined,  // If image is empty, don't send it
+            };
+
+            // Send the message to the backend
+            const response = await axiosInstance.post(`/messages/groups/send/${groupId}`, messageData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            return response.data;  // Return the newly created message
+        } catch (error) {
+            console.error("Error sending message:", error);
+            return null; // You can handle errors appropriately here
+        }
+    },
+
+}))

@@ -156,37 +156,5 @@ export const useAuthStore = create((set,get) => ({
     if (get().socket?.connected) get().socket.disconnect();
   },
 
-  createGroup : async (groupData) => {
-    try {
-      const response = await axiosInstance.post('/auth/create-group', groupData, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`, // if you use token-based authentication
-        },
-      });
-  
-      console.log('Group created successfully:', response.data.group);
-      toast.success('Group created successfully');
-      return response.data.group;
-    } catch (error) {
-      console.error('Error creating group:', error.response?.data?.message || error.message);
-      toast.error('Error creating group');
-    }
-  },
-  fetchUserGroups: async () => {
-    try {
-      const response = await axiosInstance.get('/auth/fetch-groups', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`, // if you use token-based authentication
-        },
-      });
-  
-      console.log('Fetched groups successfully:', response.data.groups);
-      return response.data.groups;
-    } catch (error) {
-      console.error('Error fetching groups:', error.response?.data?.message || error.message);
-      toast.error('Error fetching groups');
-    }
-  },
-  
   
 }));

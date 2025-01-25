@@ -3,15 +3,20 @@ import Conversations from "./Conversations";
 import SearchInput from "./SearchInput";
 import { UsersRound } from "lucide-react";
 import NewGroupModal from './NewGroupModel';
-import { useAuthStore } from "../../store/useAuthStore";
+import { useGroupStore } from "../../store/useGroupStore";
+import { useChatStore } from '../../store/useChatStore';
 import '../../App.css';
 
 const Sidebar = () => {
-  const { fetchUserGroups, createGroup } = useAuthStore();
+  const {selectedUser,setSelectedUser} = useChatStore();
+  const { fetchUserGroups, createGroup, selectedGroup, setSelectedGroup } = useGroupStore();
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [groups, setGroups] = useState([]);
-
   const [isLoading, setIsLoading] = useState(true);
+
+  const [hoveredGroup, setHoveredGroup] = useState(null); // Track hovered group
+
   // Open modal
   const handleNewGroupClick = () => {
     setIsModalOpen(true);
@@ -22,15 +27,22 @@ const Sidebar = () => {
     setIsModalOpen(false);
   };
 
+  // Fetch groups on mount
   useEffect(() => {
     const getGroups = async () => {
-      const groupsData = await fetchUserGroups(); // Fetch groups
-      setGroups(groupsData); // Update the groups state with the fetched data
-      setIsLoading(false); // Set loading state to false once data is fetched
+      const groupsData = await fetchUserGroups();
+      setGroups(groupsData);
+      setIsLoading(false);
     };
 
-    getGroups(); // Call the function to fetch groups on component mount
-  }, [createGroup, fetchUserGroups,isModalOpen]);
+    getGroups();
+  }, [createGroup, fetchUserGroups, isModalOpen]);
+
+  // Handle group click to set the selected group
+  const handleGroupClick = (group) => {
+    setSelectedUser(null);
+    setSelectedGroup(group);
+  };
 
   return (
     <div className='border-r border-black p-3 flex flex-col sidebar mt-16 w-1/3' style={{ backgroundColor: "#2c2c2c" }}>
@@ -44,34 +56,44 @@ const Sidebar = () => {
         </div>
       </div>
       <SearchInput />
-      {!isLoading && groups &&
-        <div className="users-cards sm:pl-1.5 mt-2 mb-2">
+      {!isLoading && groups.length > 0 && (
+        <div className="users-cards sm:pl-1.5 mt-2 mb-2 overflow-y-auto min-h-28">
+          <h3 className='text-white font-sans sm:pl-1.5 mt-2 mb-2 sm:text-xl sm:font-bold'>Your Groups</h3>
           {groups.map((group) => {
+            const isSelected = selectedGroup && selectedGroup._id === group._id;
+            const isHovered = hoveredGroup && hoveredGroup._id === group._id;
+            const classHover = isHovered || isSelected ? "bg-[#383838]" : "hover:bg-[#383838]";
+
             return (
-              <>
-                <h3 className='text-white font-sans sm:pl-1.5 mt-2 mb-2 sm:text-xl sm:font-bold'>Your Groups</h3>
-                <div className="w-full flex items-center overflow-y-scroll cursor-pointer"> 
-                  <div className="avatar flex items-center gap-2.5 "> 
-                    <div className="w-14 h-14 rounded-full">
-                      <img
-                        src={group.profilePic ? group.profilePic : "group_profile.png"}
-                        alt="user avatar"
-                      />
-                    </div>
-                    <p className="md:font-semibold text-light hidden sm:block">{group.name}</p>
+              <div
+                key={group._id}
+                className={`w-full rounded-sm flex items-center cursor-pointer ${classHover} ${isSelected?"bg-[#454545]":""} `}
+                onClick={() => handleGroupClick(group)} // Handle group selection
+                onMouseEnter={() => setHoveredGroup(group)} // Set hovered group on mouse enter
+                onMouseLeave={() => setHoveredGroup(null)} // Reset hovered group on mouse leave
+              >
+                <div className="avatar flex items-center gap-2.5">
+                  <div className="w-14 h-14 rounded-full">
+                    <img
+                      src={group.profilePic ? group.profilePic : "group_profile.png"}
+                      alt="user avatar"
+                    />
                   </div>
+                  <p className={`md:font-semibold text-light ${isSelected ? 'font-bold' : ''} hidden sm:block`}>
+                    {group.name}
+                  </p>
                 </div>
-              </>
+              </div>
             );
           })}
         </div>
-      }
-      <Conversations /> 
+      )}
+      <Conversations />
       {isModalOpen && (
         <NewGroupModal
           isOpen={isModalOpen}
           onClose={closeModal}
-          createGroup={createGroup} 
+          createGroup={createGroup}
         />
       )}
     </div>

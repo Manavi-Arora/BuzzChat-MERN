@@ -3,21 +3,25 @@ import { useState } from "react";
 import { useChatStore } from "../../store/useChatStore";
 import toast from "react-hot-toast";
 import { X } from "lucide-react";
+import { useGroupStore } from "../../store/useGroupStore";
 const SearchInput = () => {
   const [search, setSearch] = useState("");
   const { users, setSelectedUser } = useChatStore();
-
+  const {groups,setSelectedGroup } = useGroupStore();
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevents the default form submit action
     if (!search) return;
-
     const user = users.find((c) => c.fullName.toLowerCase().includes(search.toLowerCase()));
-
-    if (user) {
+    const group = groups.find((c)=> c.name.toLowerCase().includes(search.toLowerCase()));
+    if(group){
+      setSelectedGroup(group);
+      setSearch("");
+    }
+    else if (user) {
       setSelectedUser(user);
       setSearch(""); // Clear search input after selecting the user
     } else {
-      toast.error("No such user found!");
+      toast.error("No such user or group found!");
     }
   };
 
@@ -32,7 +36,7 @@ const SearchInput = () => {
         <div className="relative flex items-center w-full h-12 rounded-lg focus-within:shadow-lg bg-[#383838] overflow-hidden">
           <div className="grid place-items-center h-full w-12 text-gray-300">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
 
