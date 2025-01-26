@@ -15,6 +15,8 @@ export const useAuthStore = create((set,get) => ({
   socket: null,
   friends : [],
   showFriendsOnly : false,
+  statusUsers : [],
+  statusLoading:false,
 
   checkAuth: async () => {
     try {
@@ -155,6 +157,31 @@ export const useAuthStore = create((set,get) => ({
   disconnectSocket: () => {
     if (get().socket?.connected) get().socket.disconnect();
   },
+
+
+  fetchUsersWithStatus: async () => {
+    try {
+      const res = await axiosInstance.get("/auth/fetch-user-status");
+      set({ statusUsers: res.data });
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  },
+
+  // Function to update the current user's status image
+  updateStatus: async (statusImage) => {
+    set({ statusLoading: true });
+    try {
+      const res = await axiosInstance.put("/auth/update-status", { statusImage });
+      set({ currentStatus: res.data.status });
+      toast.success("Status updated successfully");
+    } catch (error) {
+      toast.error(error.response.data.message);
+    } finally {
+      set({ statusLoading: false });
+    }
+  },
+
 
   
 }));

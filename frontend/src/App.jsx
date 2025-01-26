@@ -14,6 +14,7 @@ import LoadingBar from "react-top-loading-bar";
 import Front from './pages/front/Front';
 import { useGroupStore } from './store/useGroupStore';
 import GroupProfile from './pages/groupProfile/GroupProfile';
+import Status from './pages/status/Status';
 
 export default function App() {
   const {authUser,checkAuth} = useAuthStore();
@@ -42,6 +43,8 @@ export default function App() {
           <Route path="/settings" element={authUser ? <Settings setProgress={setProgress} /> : <Navigate to="/login" />} />
           <Route path="/profile" element={authUser ? <Profile setProgress = {setProgress} /> : <Navigate to="/login" /> } />
           <Route path="/group-profile" element={authUser ? <GroupProfile setProgress = {setProgress} /> : <Navigate to="/login" /> } />
+          <Route path="/status" element={<Status setProgress = {setProgress} /> } />
+          
         </Routes>
         <Toaster />
       </div>

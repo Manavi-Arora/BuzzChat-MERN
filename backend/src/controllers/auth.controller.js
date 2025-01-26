@@ -232,3 +232,59 @@ export const fetchFriends = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+
+export const updateStatus = async (req, res) => {
+  const { statusImage } = req.body;  // assuming user sends the URL of the image for status
+  const userId = req.user._id;
+
+  try {
+    if (!statusImage) {
+      return res.status(400).json({ message: "Status image is required" });
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { status: statusImage },
+      { new: true }
+    );
+
+    // Set a timeout to remove the status after 24 hours
+    setTimeout(async () => {
+      await User.findByIdAndUpdate(userId, { status: "" });
+    }, 24 * 60 * 60 * 1000);  // 24 hours in milliseconds
+
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    console.log("Error in updateStatus:", error.message);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const fetchUsersWithStatus = async (req, res) => {
+  try {
+    // Fetch users with their status image URL (only those with a valid status URL)
+    const users = await User.find({
+      status: { $ne: "", $exists: true }, // Ensure status is not an empty string and exists
+    }).select("fullName email profilePic status");
+
+    // Map through users and determine if their status is expired
+    const usersWithStatus = users.map((user) => {
+      // Check if the status is expired (you can customize this condition)
+      const statusExpired = !user.status || user.status === ""; // Basic check for expired status
+      return {
+        _id: user._id,
+        fullName: user.fullName,
+        email: user.email,
+        profilePic: user.profilePic,
+        status: user.status,
+        statusExpired, // Add the expired status flag
+      };
+    });
+
+    res.status(200).json(usersWithStatus); // Return the filtered users with status
+  } catch (error) {
+    console.log("Error in fetchUsersWithStatus:", error.message);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
