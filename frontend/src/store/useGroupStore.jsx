@@ -5,7 +5,7 @@ import { useAuthStore } from "./useAuthStore";
 
 
 export const useGroupStore = create((set, get) => ({
-    groupData : null,
+    groupData: null,
     groupMessages: [],
     selectedGroup: null,
     isGroupsLoading: false,
@@ -14,7 +14,7 @@ export const useGroupStore = create((set, get) => ({
     isUpdatingGroupProfile: false,
     isUpdatingGroupDesc: false,
 
-    setSelectedGroup: (group) => set({ selectedGroup : group}),
+    setSelectedGroup: (group) => set({ selectedGroup: group }),
     setSelectedMessage: (selectedMessage) => set({ selectedMessage }),
 
     updateReaction: async (reactionData) => {
@@ -130,22 +130,22 @@ export const useGroupStore = create((set, get) => ({
     updateGroupProfilePic: async (profilePicData) => {
         const { selectedGroup } = get();  // Get selectedGroup from state
         set({ isUpdatingGroupProfile: true });
-        
+
         if (!selectedGroup) {
             return toast.error("No group selected for profile picture update.");
         }
-    
+
         try {
             const response = await axiosInstance.put(`/groups/update-GroupProfile/${selectedGroup._id}`, profilePicData);
-    
+
             // Update selectedGroup profilePic
-            set({ 
-                selectedGroup: { 
-                    ...selectedGroup, 
-                    profilePic: response.data.profilePic 
-                } 
+            set({
+                selectedGroup: {
+                    ...selectedGroup,
+                    profilePic: response.data.profilePic
+                }
             });
-    
+
             toast.success("Group profile picture updated successfully.");
         } catch (error) {
             console.error("Error in updating group profile picture:", error);
@@ -157,22 +157,22 @@ export const useGroupStore = create((set, get) => ({
     updateGroupDescription: async (descriptionData) => {
         const { selectedGroup } = get();  // Get selectedGroup from state
         set({ isUpdatingGroupDescription: true });
-    
+
         if (!selectedGroup) {
             return toast.error("No group selected for description update.");
         }
-    
+
         try {
             const response = await axiosInstance.put(`/groups/update-GroupDesc/${selectedGroup._id}`, descriptionData);
-    
+
             // Update selectedGroup description
-            set({ 
-                selectedGroup: { 
-                    ...selectedGroup, 
-                    description: response.data.description 
-                } 
+            set({
+                selectedGroup: {
+                    ...selectedGroup,
+                    description: response.data.description
+                }
             });
-    
+
             toast.success("Group description updated successfully.");
         } catch (error) {
             console.error("Error in updating group description:", error);
@@ -182,16 +182,47 @@ export const useGroupStore = create((set, get) => ({
         }
     },
 
-    fetchGroupWithMembers : async () => {
-        const { selectedGroup,groupData } = get();
+    fetchGroupWithMembers: async () => {
+        const { selectedGroup, groupData } = get();
         try {
-          const response = await axiosInstance.get(`/groups/get-membersInfo/${selectedGroup._id}`);
-          set({groupData : response.data}) ;
-      
+            const response = await axiosInstance.get(`/groups/get-membersInfo/${selectedGroup._id}`);
+            set({ groupData: response.data });
+
         } catch (error) {
-          console.error("Error fetching group with members:", error);
+            console.error("Error fetching group with members:", error);
         }
-      },
-    
+    },
+
+
+    // subscribeToGroupMessages
+    subscribeToGroupMessages: () => {
+        const { selectedGroup } = get();  // Get the selected group from the state
+        if (!selectedGroup) return;
+
+        const socket = useAuthStore.getState().socket;
+
+        // Listen for new group messages
+        socket.on("newGroupMessage", (newGroupMessage) => {
+            // Check if the message is from the selected group
+            const isMessageFromSelectedGroup = newGroupMessage.groupId === selectedGroup._id;
+
+            if (!isMessageFromSelectedGroup) return;
+
+            // Update state with the new message
+            set({
+                groupMessages: [...get().groupMessages, newGroupMessage],
+            });
+        });
+    },
+
+    // unsubscribeFromGroupMessages
+    unsubscribeFromGroupMessages: () => {
+        const socket = useAuthStore.getState().socket;
+
+        // Stop listening for new group messages
+        socket.off("newGroupMessage");
+    },
+
+
 
 }))

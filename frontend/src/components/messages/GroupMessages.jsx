@@ -6,9 +6,16 @@ import { useAuthStore } from "../../store/useAuthStore";
 
 
 const GroupMessages = () => {
-  const {fetchGroupMessages,selectedGroup,groupMessages,isMessagesLoading,sendGroupMessage} = useGroupStore();
+  const {fetchGroupMessages,selectedGroup,groupMessages,isMessagesLoading,subscribeToGroupMessages, unsubscribeFromGroupMessages,sendGroupMessage} = useGroupStore();
   const {authUser} = useAuthStore();
 
+  useEffect(() => {
+    subscribeToGroupMessages();
+    return () => {
+      unsubscribeFromGroupMessages();
+    };
+  }, [selectedGroup,subscribeToGroupMessages,unsubscribeFromGroupMessages,fetchGroupMessages]); 
+  
   useEffect(() => {
     if (selectedGroup?._id) {
       fetchGroupMessages(selectedGroup._id);

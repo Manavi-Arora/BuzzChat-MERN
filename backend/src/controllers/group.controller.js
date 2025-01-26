@@ -2,6 +2,7 @@ import User from "../models/user.model.js";
 import Group from "../models/group.model.js";
 import MessageGroup from "../models/messageGroup.model.js";
 import cloudinary from "../lib/cloudinary.js";
+import { getReceiverSocketId, io } from "../lib/socket.js";
 
 
 export const createGroup = async (req, res) => {
@@ -76,10 +77,12 @@ export const getGroupMessages = async (req, res) => {
     return res.status(500).json({ message: "Server error" });
   }
 };
+
 export const sendGroupMessage = async (req, res) => {
   try {
     const { groupId } = req.params;
-    const { senderId, text, image } = req.body; // Now we accept both text and image
+    const { text, image } = req.body; // Accepting text or image
+    const senderId = req.user._id;
 
     // Find the group by ID
     const group = await Group.findById(groupId);
@@ -98,29 +101,23 @@ export const sendGroupMessage = async (req, res) => {
       });
     }
 
-    // Create a new group message for each member
-    let newMessageGroup;
-    if (text) {
-      newMessageGroup = new MessageGroup({
-        groupId,
-        senderId,
-        receiverIds: groupMembers, // Send to all other members of the group
-        text,
-      });
-    } else if (image) {
-      newMessageGroup = new MessageGroup({
-        groupId,
-        senderId,
-        receiverIds: groupMembers, // Send to all other members of the group
-        image,
-      });
-    } else {
-      return res.status(400).json({
-        message: "Message must contain either text or an image.",
-      });
+    // Handle image upload if image exists
+    let imageUrl;
+    if (image) {
+      const uploadResponse = await cloudinary.uploader.upload(image);
+      imageUrl = uploadResponse.secure_url;
     }
 
-    // Save the message group to the database
+    // Create a new group message
+    const newMessageGroup = new MessageGroup({
+      groupId,
+      senderId,
+      receiverIds: groupMembers, // Send to all other members of the group
+      text,
+      image: imageUrl,
+    });
+
+    // Save the new message
     await newMessageGroup.save();
 
     // Populate sender and receiver details in the saved message
@@ -134,14 +131,22 @@ export const sendGroupMessage = async (req, res) => {
         select: "fullName profilePic",
       });
 
-    // Return the populated message group
+    // Send the message to online users using Socket.io
+    groupMembers.forEach((memberId) => {
+      const receiverSocketId = getReceiverSocketId(memberId); // Get socket ID of the receiver
+      if (receiverSocketId) {
+        io.to(receiverSocketId).emit("newGroupMessage", populatedMessage); // Emit message to receiver
+      }
+    });
+
+    // Return the populated message as the response
     return res.status(201).json(populatedMessage);
+
   } catch (error) {
-    console.error(error);
+    console.log("Error in sendGroupMessage controller:", error.message);
     return res.status(500).json({ message: "Server error" });
   }
 };
-
 
 export const updateGroupReaction = async (req, res) => {
   try {
