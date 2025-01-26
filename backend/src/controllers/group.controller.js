@@ -76,7 +76,6 @@ export const getGroupMessages = async (req, res) => {
     return res.status(500).json({ message: "Server error" });
   }
 };
-
 export const sendGroupMessage = async (req, res) => {
   try {
     const { groupId } = req.params;
@@ -87,8 +86,6 @@ export const sendGroupMessage = async (req, res) => {
     if (!group) {
       return res.status(404).json({ message: "Group not found" });
     }
-
-    //console.log(senderId, text, image );
 
     // Get all members of the group (excluding the sender)
     const groupMembers = group.members.filter(
@@ -126,13 +123,25 @@ export const sendGroupMessage = async (req, res) => {
     // Save the message group to the database
     await newMessageGroup.save();
 
-    // Return the newly created message group
-    return res.status(201).json(newMessageGroup);
+    // Populate sender and receiver details in the saved message
+    const populatedMessage = await MessageGroup.findById(newMessageGroup._id)
+      .populate({
+        path: "senderId", // Populate sender info
+        select: "fullName profilePic", // Only select necessary fields
+      })
+      .populate({
+        path: "receiverIds", // Populate receiver info (if necessary, can be omitted if not needed in the response)
+        select: "fullName profilePic",
+      });
+
+    // Return the populated message group
+    return res.status(201).json(populatedMessage);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Server error" });
   }
 };
+
 
 export const updateGroupReaction = async (req, res) => {
   try {

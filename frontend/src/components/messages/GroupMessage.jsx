@@ -1,7 +1,6 @@
 import { useAuthStore } from "../../store/useAuthStore";
 import { useState, useEffect } from "react";
 import { useGroupStore } from "../../store/useGroupStore";
-import { useChatStore } from "../../store/useChatStore";
 
 const Message = ({ message }) => {
 
@@ -9,8 +8,11 @@ const Message = ({ message }) => {
   const { selectedMessage,setSelectedMessage,updateReaction } = useGroupStore();  // Group messages
 
   const [reaction, setReaction] = useState(null);
-  const fromMe = message.senderId._id === authUser?._id;  // Check if the message is from the current user
-
+  //console.log(message);
+  const fromMe = message.senderId._id === authUser?._id;   
+  //console.log("message.senderId",message.senderId,"authUser?._id",authUser?._id);
+  //console.log(fromMe);
+ 
   function extractTime(dateString) {
     const date = new Date(dateString);
     const hours = padZero(date.getHours());
@@ -42,7 +44,7 @@ const Message = ({ message }) => {
   // Helper function to format the message time
 
   // Extract sender details (fullName, profilePic)
-  const senderName = fromMe ? 'You' : message.senderId.fullName || "Unknown Sender";
+  const senderName = fromMe ? 'You' : message.senderId.fullName;
   const profilePic = fromMe
     ? authUser.profilePic || "avatar.jpg"
     : message.senderId.profilePic || "avatar.jpg";

@@ -36,7 +36,7 @@ const Sidebar = () => {
     };
 
     getGroups();
-  }, [createGroup, fetchUserGroups, isModalOpen]);
+  }, [createGroup, fetchUserGroups]);
 
   // Handle group click to set the selected group
   const handleGroupClick = (group) => {
@@ -45,7 +45,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className='border-r border-black p-3 flex flex-col sidebar mt-16 w-1/3' style={{ backgroundColor: "#2c2c2c" }}>
+    <div className='border-r border-black p-3 flex flex-col sidebar mt-16 lg:w-1/3 w-auto' style={{ backgroundColor: "#2c2c2c" }}>
       <div className='flex pb-3 sm:pl-2 items-center justify-between'>
         <h3 className='text-white font-sans sm:text-2xl sm:font-bold'>Chats</h3>
         <div className="flex justify-end items-center gap-2 text-white font-sans">

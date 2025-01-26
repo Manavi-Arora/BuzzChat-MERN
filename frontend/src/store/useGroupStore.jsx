@@ -52,7 +52,7 @@ export const useGroupStore = create((set, get) => ({
                 },
             });
 
-            console.log('Group created successfully:', response.data.group);
+            //console.log('Group created successfully:', response.data.group);
             toast.success('Group created successfully');
             return response.data.group;
         } catch (error) {
@@ -68,7 +68,7 @@ export const useGroupStore = create((set, get) => ({
                 },
             });
             set({ groups: response.data.groups })
-            console.log('Fetched groups successfully:', response.data.groups);
+            //console.log('Fetched groups successfully:', response.data.groups);
             return response.data.groups;
         } catch (error) {
             console.error('Error fetching groups:', error.response?.data?.message || error.message);
@@ -78,6 +78,7 @@ export const useGroupStore = create((set, get) => ({
 
 
     fetchGroupMessages: async (groupId) => {
+        const { selectedMessage, groupMessages } = get();
         set({ isMessagesLoading: true });
         try {
 
@@ -100,6 +101,7 @@ export const useGroupStore = create((set, get) => ({
     },
 
     sendGroupMessage: async (groupId, senderId, text, image) => {
+        const { selectedMessage, groupMessages } = get();
         try {
             const token = localStorage.getItem('token');
 
@@ -116,7 +118,8 @@ export const useGroupStore = create((set, get) => ({
                     Authorization: `Bearer ${token}`,
                 },
             });
-
+            //console.log(response.data);
+            set({ groupMessages: [...groupMessages, response.data] });
             return response.data;  // Return the newly created message
         } catch (error) {
             console.error("Error sending message:", error);
