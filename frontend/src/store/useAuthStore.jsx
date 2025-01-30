@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import { io } from "socket.io-client";
 
 const BASE_URL = "http://localhost:3000"
-export const useAuthStore = create((set,get) => ({
+export const useAuthStore = create((set, get) => ({
   authUser: null,
   isSigningUp: false,
   isLoggingIn: false,
@@ -13,10 +13,10 @@ export const useAuthStore = create((set,get) => ({
   isCheckingAuth: true,
   onlineUsers: [],
   socket: null,
-  friends : [],
-  showFriendsOnly : false,
-  statusUsers : [],
-  statusLoading:false,
+  friends: [],
+  showFriendsOnly: false,
+  statusUsers: [],
+  statusLoading: false,
 
   checkAuth: async () => {
     try {
@@ -55,6 +55,21 @@ export const useAuthStore = create((set,get) => ({
       toast.error(error.response.data.message);
     } finally {
       set({ isLoggingIn: false });
+    }
+  },
+  handleCredentialResponse: async (response) => {
+
+    const id_token = response.credential;
+    try {
+      const res = await axiosInstance.post("/auth/google-login", {
+        id_token: id_token
+      })
+      set({ authUser: res.data })
+      toast.success("Logged In Successfully")
+
+    } catch (error) {
+      console.log("Error in checkAuth", error.message);
+      set({ authUser: null })
     }
   },
   logout: async () => {
@@ -108,7 +123,7 @@ export const useAuthStore = create((set,get) => ({
       toast.error(error.response.data.message);
     }
   },
-  
+
   // Remove a friend from the user's friends list (mutual removal)
   removeFriend: async (friendId) => {
     try {
@@ -125,7 +140,7 @@ export const useAuthStore = create((set,get) => ({
       toast.error(error.response.data.message);
     }
   },
-  
+
 
   fetchFriends: async () => {
     try {
@@ -183,5 +198,5 @@ export const useAuthStore = create((set,get) => ({
   },
 
 
-  
+
 }));
