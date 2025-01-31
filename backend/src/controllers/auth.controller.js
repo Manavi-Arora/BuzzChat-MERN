@@ -234,9 +234,8 @@ export const fetchFriends = async (req, res) => {
   }
 };
 
-
 export const updateStatus = async (req, res) => {
-  const { statusImage } = req.body;  // assuming user sends the URL of the image for status
+  const { statusImage } = req.body;  // Assuming the user sends a URL or base64 image string
   const userId = req.user._id;
 
   try {
@@ -244,18 +243,24 @@ export const updateStatus = async (req, res) => {
       return res.status(400).json({ message: "Status image is required" });
     }
 
+    // Upload the image to Cloudinary
+    const uploadResponse = await cloudinary.uploader.upload(statusImage);
+
+    // Get the current timestamp
+    const currentTimestamp = new Date();
+
+    // Update the user's status with the URL of the uploaded image and the statusUpdatedAt timestamp
     const updatedUser = await User.findByIdAndUpdate(
       userId,
-      { status: statusImage },
+      {
+        status: uploadResponse.secure_url,
+        statusUpdatedAt: currentTimestamp, // Store the time when the status was updated
+      },
       { new: true }
     );
 
-    // Set a timeout to remove the status after 24 hours
-    setTimeout(async () => {
-      await User.findByIdAndUpdate(userId, { status: "" });
-    }, 24 * 60 * 60 * 1000);  // 24 hours in milliseconds
-
     res.status(200).json(updatedUser);
+
   } catch (error) {
     console.log("Error in updateStatus:", error.message);
     res.status(500).json({ message: "Internal server error" });

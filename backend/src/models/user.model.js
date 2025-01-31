@@ -39,7 +39,11 @@ const userSchema = new mongoose.Schema({
     status: {
       type: String,
       default: "",
-    },  
+    }, 
+    statusUpdatedAt: { 
+      type: Date,
+      default: null,
+    }, 
 },{ timestamps: true });
 
 const User = mongoose.model("User", userSchema);

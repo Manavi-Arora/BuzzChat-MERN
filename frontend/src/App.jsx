@@ -43,7 +43,7 @@ export default function App() {
           <Route path="/settings" element={authUser ? <Settings setProgress={setProgress} /> : <Navigate to="/login" />} />
           <Route path="/profile" element={authUser ? <Profile setProgress = {setProgress} /> : <Navigate to="/login" /> } />
           <Route path="/group-profile" element={authUser ? <GroupProfile setProgress = {setProgress} /> : <Navigate to="/login" /> } />
-          <Route path="/status" element={<Status setProgress = {setProgress} /> } />
+          <Route path="/status" element={authUser ? <Status setProgress = {setProgress} /> : <Navigate to="/login" /> } />
           
         </Routes>
         <Toaster />

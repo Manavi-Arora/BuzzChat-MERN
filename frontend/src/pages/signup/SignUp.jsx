@@ -13,18 +13,18 @@ const SignUp = (props) => {
     password: "",
     confirmPass: ""
   });
-  useEffect(() => {
-    const script = document.createElement("script")
-    script.src = "https://accounts.google.com/gsi/client"
-    script.async = true
-    script.defer = true
-    document.body.appendChild(script)
+   useEffect(() => {
+     const script = document.createElement("script")
+     script.src = "https://accounts.google.com/gsi/client"
+     script.async = true
+     script.defer = true
+     document.body.appendChild(script)
 
-    return () => {
-      document.body.removeChild(script)
+     return () => {
+       document.body.removeChild(script)
 
-    }
-  }, [])
+     }
+   }, [])
 
   const { signup, isSigningUp } = useAuthStore();
   const togglePasswordVisibility = () => {
@@ -135,7 +135,7 @@ const SignUp = (props) => {
           <h1 className="text-sm font-semibold mb-6 text-gray-500 text-center">Join to Our Community with all time access and free </h1>
           <div className="mt-4 flex flex-col lg:flex-row items-center justify-between">
             <div className="w-full mb-2 lg:mb-0">
-              <div id="g_id_onload"
+               <div id="g_id_onload"
                 data-client_id="288032961209-jubn9l1ejem7qvqk40ml19eukhsc3uco.apps.googleusercontent.com"
                 data-callback="handleCredentialResponse"
                 data-auto_prompt="false"></div>
@@ -147,7 +147,7 @@ const SignUp = (props) => {
                 data-size="large"
                 data-logo_alignment="left">
 
-              </div>
+              </div> 
             </div>
 
           </div>

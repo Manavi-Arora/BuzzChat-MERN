@@ -21,6 +21,7 @@ export const useAuthStore = create((set, get) => ({
   checkAuth: async () => {
     try {
       const res = await axiosInstance.get("/auth/check");
+      console.log(get().authUser);
       set({ authUser: res.data });
       get().connectSocket();
     } catch (error) {
@@ -188,7 +189,6 @@ export const useAuthStore = create((set, get) => ({
     set({ statusLoading: true });
     try {
       const res = await axiosInstance.put("/auth/update-status", { statusImage });
-      set({ currentStatus: res.data.status });
       toast.success("Status updated successfully");
     } catch (error) {
       toast.error(error.response.data.message);

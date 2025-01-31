@@ -11,19 +11,19 @@ const LogIn = (props) => {
         password: "",
     });
     const { login, isLoggingIn, handleCredentialResponse } = useAuthStore();
-    window.handleCredentialResponse = handleCredentialResponse;
-    useEffect(() => {
-        const script = document.createElement("script")
-        script.src = "https://accounts.google.com/gsi/client"
-        script.async = true
-        script.defer = true
-        document.body.appendChild(script)
+     window.handleCredentialResponse = handleCredentialResponse;
+     useEffect(() => {
+         const script = document.createElement("script")
+         script.src = "https://accounts.google.com/gsi/client"
+         script.async = true
+         script.defer = true
+         document.body.appendChild(script)
 
-        return () => {
-            document.body.removeChild(script)
+         return () => {
+             document.body.removeChild(script)
 
-        }
-    }, [])
+         }
+     }, [])
     function handleInputErrors() {
         if (!formData.email || !formData.password) {
             toast.error("All fields are required!");
@@ -123,7 +123,7 @@ const LogIn = (props) => {
 
                 <div className="max-w-md w-full p-6">
                     <h1 className="text-3xl font-semibold mb-6 text-black text-center">Login<span className='text-gray-800' style={{ textShadow: '1px 2px 5px black, 2px 2px 5px #e0e1e1' }}> BuzzChat</span></h1>
-                    <div id="g_id_onload"
+                     <div id="g_id_onload"
                         data-client_id="288032961209-jubn9l1ejem7qvqk40ml19eukhsc3uco.apps.googleusercontent.com"
                         data-callback="handleCredentialResponse"
                         data-auto_prompt="false"></div>
@@ -135,7 +135,7 @@ const LogIn = (props) => {
                         data-size="large"
                         data-logo_alignment="left">
 
-                    </div>
+                    </div> 
                     <form action="#" method="POST" className="space-y-4" onSubmit={handleSubmit}>
 
                         <div>
