@@ -5,6 +5,7 @@ import { io } from "socket.io-client";
 
 const BASE_URL = "http://localhost:3000"
 export const useAuthStore = create((set, get) => ({
+  authUserStatus : null,
   authUser: null,
   isSigningUp: false,
   isLoggingIn: false,
@@ -193,6 +194,16 @@ export const useAuthStore = create((set, get) => ({
       toast.error(error.response.data.message);
     } finally {
       set({ statusLoading: false });
+    }
+  },
+
+  fetchAuthUserStatus: async () => {
+    try {
+      const res = await axiosInstance.get("/auth/fetch-authUser-status");
+      set({ authUserStatus: res.data });
+
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to fetch status");
     }
   },
 

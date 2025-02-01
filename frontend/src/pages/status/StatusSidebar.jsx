@@ -3,7 +3,7 @@ import { useAuthStore } from "../../store/useAuthStore";  // Zustand store to ge
 import { ChartPie } from "lucide-react";  // Import ChartPie icon from lucide-react
 import SidebarSkeleton from "../../components/sidebar/SidebarSkeleton";  // Assuming SidebarSkeleton is a component
 
-const StatusSidebar = ({ onUserClick }) => {
+const StatusSidebar = ({ onUserClick,setProgress}) => {
   const { statusUsers, fetchUsersWithStatus, statusLoading, authUser, updateStatus } = useAuthStore();
   const [hoveredUser, setHoveredUser] = useState(null); // Track hovered user
   const [selectedImg, setSelectedImg] = useState(null);  // State to store selected image
@@ -23,18 +23,22 @@ const StatusSidebar = ({ onUserClick }) => {
 
   const handleImageUpload = async (e) => {
     // Update profile image on upload
+    setProgress(30);
     const file = e.target.files[0];
     if (!file) return;
 
     const reader = new FileReader();
     reader.readAsDataURL(file);
+    setProgress(50);
     reader.onload = async () => {
       const base64Image = reader.result;
       setSelectedImg(base64Image);
       // Only call updateStatus if image has been successfully selected
+      setProgress(70);
       if (base64Image) {
         await updateStatus(base64Image); // Pass the base64 image to update status
       }
+      setProgress(100);
     };
   };
 

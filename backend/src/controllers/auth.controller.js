@@ -3,6 +3,7 @@ import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import cloudinary from "../lib/cloudinary.js";
 import {OAuth2Client} from "google-auth-library";
+import { getReceiverSocketId, io } from "../lib/socket.js";
 
 export const signup = async (req, res) => {
   const { fullName, email, password } = req.body;
@@ -258,11 +259,37 @@ export const updateStatus = async (req, res) => {
       },
       { new: true }
     );
-
+    io.emit('statusUpdated', updatedUser);
     res.status(200).json(updatedUser);
 
   } catch (error) {
     console.log("Error in updateStatus:", error.message);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+
+export const fetchAuthUserStatus = async (req, res) => {
+  try {
+    // Get the authenticated user's ID from the request (based on token or session)
+    const userId = req.user._id;
+
+    // Find the user from the database and return the status information
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Return the user's status along with any other necessary information
+    res.status(200).json({
+      status: user.status,
+      profilePic: user.profilePic, // You can include other details as needed
+      statusUpdatedAt: user.statusUpdatedAt,
+    });
+
+  } catch (error) {
+    console.error("Error fetching status:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -287,7 +314,7 @@ export const fetchUsersWithStatus = async (req, res) => {
         statusExpired, // Add the expired status flag
       };
     });
-
+    io.emit('usersWithStatus', usersWithStatus); 
     res.status(200).json(usersWithStatus); // Return the filtered users with status
   } catch (error) {
     console.log("Error in fetchUsersWithStatus:", error.message);

@@ -1,5 +1,5 @@
 import express from "express";
-import { checkAuth, login, logout, signup, updateProfile, updateBio,updateFriends, fetchFriends,updateStatus,fetchUsersWithStatus,googleLogin} from "../controllers/auth.controller.js";
+import { checkAuth, login, logout, signup, updateProfile, updateBio,updateFriends, fetchFriends,updateStatus,fetchUsersWithStatus,fetchAuthUserStatus,googleLogin} from "../controllers/auth.controller.js";
 import { protectRoute } from "../middleware/auth.middleware.js";
 const router = express.Router();
 
@@ -15,6 +15,7 @@ router.put("/update-friends", protectRoute, updateFriends);
 
 router.get("/fetch-friends", protectRoute, fetchFriends);
 router.get("/fetch-user-status", protectRoute, fetchUsersWithStatus);
+router.get("/fetch-authUser-status", protectRoute, fetchAuthUserStatus);
 router.get("/check", protectRoute, checkAuth);
 
 
