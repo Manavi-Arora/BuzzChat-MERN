@@ -3,13 +3,13 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import { connectDB } from "./lib/db.js";
 import cors from "cors";
-import cron from 'node-cron';
 
 import authRoutes from "./routes/auth.route.js";
 import messageRoutes from "./routes/message.route.js";
 import { app, server } from "./lib/socket.js";
 import groupRoutes from "./routes/group.routes.js";
 
+import '../src/lib/cronJobs.js';
 dotenv.config();
 const PORT = process.env.PORT;
 

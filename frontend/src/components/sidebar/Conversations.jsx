@@ -15,7 +15,6 @@ const Conversations = () => {
 
 	useEffect(()=>{
 		fetchFriends();
-		console.log(friends)
 	},[fetchFriends])
 
 	if(isUsersLoading){

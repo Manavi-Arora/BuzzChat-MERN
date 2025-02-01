@@ -237,7 +237,7 @@ export const fetchFriends = async (req, res) => {
 export const updateStatus = async (req, res) => {
   const { statusImage } = req.body;  // Assuming the user sends a URL or base64 image string
   const userId = req.user._id;
-
+  
   try {
     if (!statusImage) {
       return res.status(400).json({ message: "Status image is required" });

@@ -11,7 +11,7 @@ const StatusSidebar = ({ onUserClick }) => {
 
   useEffect(() => {
     fetchUsersWithStatus();  // Fetch users with their status on component mount
-  }, [fetchUsersWithStatus, updateStatus, statusUsers]);
+  }, [fetchUsersWithStatus, updateStatus, statusUsers,authUser]);
 
   const handleUserHover = (user) => {
     setHoveredUser(user);  // Set hovered user
