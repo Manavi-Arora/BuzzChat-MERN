@@ -10,6 +10,7 @@ import GroupMessageInput from "./GroupMessageInput";
 import { EllipsisVertical } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from "../../store/useAuthStore";
+import { Phone,Video} from "lucide-react";
 
 const NoChatSelected = () => {
 	return (
@@ -24,14 +25,14 @@ const NoChatSelected = () => {
 };
 
 const MessageContainer = () => {
-	const {setToken,setChannel,fetchToken,onlineUsers,setCalling} = useAuthStore()
+	const { setToken, setChannel, fetchToken, onlineUsers, setCalling } = useAuthStore()
 
-    const handleCall = async () => {
-        const channelName = ("channel_" + (Math.random()*30000).toFixed(0));
-        const res = await fetchToken(channelName,0)
-        setCalling(true)
-        setChannel(channelName)
-        setToken(res)
+	const handleCall = async () => {
+		const channelName = ("channel_" + (Math.random() * 30000).toFixed(0));
+		const res = await fetchToken(channelName, 0)
+		setCalling(true)
+		setChannel(channelName)
+		setToken(res)
 	}
 	const { selectedUser, setSelectedUser } = useChatStore();
 	const { fetchGroupMessages, sendGroupMessage, selectedGroup, groupMessages, setSelectedGroup } = useGroupStore();
@@ -61,7 +62,8 @@ const MessageContainer = () => {
 	else return (
 
 		<div className='md:min-w-[450px] flex flex-col w-full mt-16' style={{ backgroundColor: "#2c2c2c" }}>
-			<div className='bg-[#2c2c2c] px-4 mb-2 py-2 flex items-center gap-3 border-b-2 border-black'>
+			<div className='bg-[#2c2c2c] px-4 mb-2 py-2 flex justify-between items-center gap-3 border-b-2 border-black'>
+				<div className="flex gap-3 items-center">
 				<div className='w-12 h-12 rounded-full avatar'>
 					<img
 						src={selectedUser ? (selectedUser.profilePic ? selectedUser.profilePic : "avatar.jpg") : (selectedGroup.profilePic ? selectedGroup.profilePic : "group_profile.png")}
@@ -70,7 +72,8 @@ const MessageContainer = () => {
 					/>
 				</div>
 				<span className='text-light font-bold'>{selectedUser ? (selectedUser.fullName) : (selectedGroup.name)}</span>
-				<button onClick={handleCall}>Call</button>
+				</div>
+				{selectedUser ? <button onClick={handleCall}><Video /></button> : null}
 				{selectedGroup && <button className="ml-auto" onClick={handleGroupProfile}>
 					<EllipsisVertical />
 				</button>}

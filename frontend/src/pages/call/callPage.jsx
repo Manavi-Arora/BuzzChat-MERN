@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useAuthStore } from "../../store/useAuthStore";
 import AgoraRTC, { AgoraRTCProvider,useRTCClient, useJoin, useLocalMicrophoneTrack, useLocalCameraTrack, usePublish, useRemoteUsers, useIsConnected, LocalUser, RemoteUser } from "agora-rtc-react";
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+import { Mic,MicOff,Camera,CameraOff,PhoneCall,PhoneOff } from "lucide-react";
 
 export const CallPage = () => {
   const { rchannelName, rtoken, token, setCalling, channel } = useAuthStore();
@@ -114,14 +115,14 @@ const CallInterface = ({ client, appId, channel, token, setCalling }) => {
         <div className="control h-16 flex justify-between p-4 bg-gray-800">
           <div className="left-control flex gap-5">
             <button onClick={() => setMic((a) => !a)}>
-              <img src={micOn ? "microphone.gif" : "no-microphone.gif"} className="w-10 h-10" />
+              {micOn ?<Mic /> : <MicOff />}
             </button>
-            <button className="btn btn-circle p-0.5 bg-white btn-outline" onClick={() => setCamera((a) => !a)}>
-              <img src={cameraOn ? "video.png" : "no-video.png"} className="w-10 h-10" />
+            <button onClick={() => setCamera((a) => !a)}>
+              {cameraOn ? <Camera /> : <CameraOff />}
             </button>
           </div>
           <button onClick={() => setCalling(false)}>
-            <img src={remoteUsers?.length < 1 ? "calling.gif" : "callcut.gif"} className="w-10 h-10" />
+          <PhoneOff />
           </button>
         </div>
       )}
