@@ -69,7 +69,7 @@ ZappChat is a *MERN-stack* real-time chat platform with *one-on-one & group mess
 
 ### 1️⃣ *Clone the Repository*  
 ```
-git clone https://github.com/your-username/ZappChat.git
+git clone https://github.com/Manavi-Arora/BuzzChat-MERN.git
 cd ZappChat
 ```
 
