@@ -13,6 +13,7 @@
     "@lottiefiles/dotlottie-react": "^0.12.1",
     "agora-rtc-react": "^2.3.0",
     "axios": "^1.7.9",
+    "BuzzChat-mern": "file:..",
     "lucide-react": "^0.469.0",
     "node-cron": "^3.0.3",
     "react": "^18.3.1",

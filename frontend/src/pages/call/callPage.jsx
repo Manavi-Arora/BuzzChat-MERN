@@ -115,10 +115,10 @@ const CallInterface = ({ client, appId, channel, token, setCalling }) => {
         <div className="control h-16 flex justify-between p-4 bg-gray-800">
           <div className="left-control flex gap-5">
             <button onClick={() => setMic((a) => !a)}>
-              {micOn ?<Mic /> : <MicOff />}
+              {!micOn ?<Mic /> : <MicOff />}
             </button>
             <button onClick={() => setCamera((a) => !a)}>
-              {cameraOn ? <Camera /> : <CameraOff />}
+              {!cameraOn ? <Camera /> : <CameraOff />}
             </button>
           </div>
           <button onClick={() => setCalling(false)}>
