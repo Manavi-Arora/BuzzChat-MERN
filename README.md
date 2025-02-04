@@ -32,10 +32,10 @@ ZappChat is a *MERN-stack* real-time chat platform with *one-on-one & group mess
 ✅ *Create & Manage Groups* – Add/remove participants easily.  
 ✅ *Status Updates* – Share text/image status updates visible to friends.  
 
-### 🔹 *User Profile Management*  
+### 🔹 *User Profile Management and Friend Suggestions*  
 ✅ *Profile Picture Update* – Upload and change profile pictures.  
-✅ *Edit Profile* – Update username, bio, and other personal details.  
-✅ *Privacy Settings* – Control who can view your profile and message you.  
+✅ *Edit Profile* – Update username, bio, and other personal details.
+✅ Friend Suggestion Management – View, send, and manage friend requests, adjust suggestion algorithms, hide/block suggestions, and add or remove friends from available users
 
 ### 🔹 *Settings & Customization*  
 ✅ *Change Theme* – Switch between *dark & light* modes.  
@@ -70,7 +70,7 @@ ZappChat is a *MERN-stack* real-time chat platform with *one-on-one & group mess
 ### 1️⃣ *Clone the Repository*  
 ```
 git clone https://github.com/Manavi-Arora/BuzzChat-MERN.git
-cd ZappChat
+cd BuzzChat-MERN
 ```
 
 
