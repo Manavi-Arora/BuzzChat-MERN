@@ -106,6 +106,6 @@ npm start
 ---
 
 ## 🎥 Live Demo  
-🔗 [BuzzChat-MERN](#) (Add live link here)  
+🔗 [BuzzChat-MERN](https://buzzchat-mern.onrender.com)  
 
-💬 *Start chatting, make video calls, and stay connected – all in real time with ZappChat!* 🚀
+💬 *Start chatting, make video calls, and stay connected – all in real time with BuzzChat!* 🚀
