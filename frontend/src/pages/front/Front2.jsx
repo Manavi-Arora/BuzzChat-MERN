@@ -11,13 +11,14 @@ function Front2() {
                 src="https://lottie.host/26942994-b18e-48e5-b13c-3c4402452e59/FURkBID1S5.json"
                 loop
                 autoplay
-                className='w-11/12 shadow-xl shadow-black rounded-md h-1/2'
+                className='w-9/12 md:w-11/12 shadow-xl shadow-black rounded-md h-1/2'
             />
 
             <div className="font-sans text-gray-700">
-                <h1 className="text-5xl font-extrabold">BuzzChat - Your Ultimate Chat Experience!</h1>
-                <p className="py-6 text-md">
-                Stay connected with real-time messaging, group chats, and instant sharing of text, photos, and videos. Enjoy complete privacy with end-to-end encryption, customizable themes, and expressive emojis and stickers. BuzzChat redefines simplicity, fun, and security in messaging!
+                <h1 className="md:text-5xl text-3xl font-extrabold mt-6 lg:mt-0">BuzzChat - Your Ultimate Chat Experience!</h1>
+                <p className="py-6 md:text-md">
+                BuzzChat redefines communication with seamless real-time messaging, high-quality voice/video calls, secure authentication, and multimedia sharing including text and images, all wrapped in customizable themes and end-to-end encryption for privacy, offering an intuitive experience for both one-on-one and group chats, along with easy profile management and personalized settings and suggestions.
+
                 </p>
             </div>
 

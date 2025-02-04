@@ -16,10 +16,10 @@ export default function Front() {
                 <div className="hero-content flex-col lg:flex-row-reverse">
                     <img
                         src="chatGif.gif"
-                        className="rounded-lg min-w-fit" />
+                        className="rounded-lg " />
                     <div className="font-sans text-gray-700">
-                        <h1 className="text-5xl font-extrabold">Welcome to BuzzChat - Where Conversations Come Alive!</h1>
-                        <p className="py-6 text-md">
+                        <h1 className="md:text-5xl text-3xl font-extrabold">Welcome to BuzzChat - Where Conversations Come Alive!</h1>
+                        <p className="py-6 md:text-md">
                             Dive into lively chats, make new connections, and stay updated with the buzz. Join the conversation and never miss a moment!
                         </p>
                         <button

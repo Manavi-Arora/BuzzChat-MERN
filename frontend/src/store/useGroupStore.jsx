@@ -220,7 +220,7 @@ export const useGroupStore = create((set, get) => ({
         const socket = useAuthStore.getState().socket;
 
         // Stop listening for new group messages
-        socket.off("newGroupMessage");
+        socket?.off("newGroupMessage");
     },
 
 

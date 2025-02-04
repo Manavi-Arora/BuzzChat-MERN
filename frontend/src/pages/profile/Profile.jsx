@@ -34,8 +34,8 @@ const Profile = (props) => {
 
 
   return (
-    <div className="h-screen w-screen bg-[#2c2c2c] flex justify-center items-center">
-      <div className="min-w-5/12 w-5/12">
+    <div className="min-h-screen h-auto w-screen bg-[#2c2c2c] flex justify-center items-center">
+      <div className="sm:w-5/12 w-full">
         <div className="mt-16 rounded-xl p-4 bg-[#454545]">
           <div className="text-center">
             <h1 className="md:text-2xl font-bold text-light mb-1">PROFILE</h1>
