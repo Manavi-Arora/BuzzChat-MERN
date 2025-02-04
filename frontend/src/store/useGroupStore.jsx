@@ -202,7 +202,7 @@ export const useGroupStore = create((set, get) => ({
         const socket = useAuthStore.getState().socket;
 
         // Listen for new group messages
-        socket.on("newGroupMessage", (newGroupMessage) => {
+        socket?.on("newGroupMessage", (newGroupMessage) => {
             // Check if the message is from the selected group
             const isMessageFromSelectedGroup = newGroupMessage.groupId === selectedGroup._id;
 

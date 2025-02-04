@@ -1,9 +1,17 @@
 import MessageContainer from "../../components/messages/MessageContainer";
 import Sidebar from "../../components/sidebar/Sidebar";
 import { useEffect } from "react";
+import CallPage from "../call/callPage";
+import { useAuthStore } from "../../store/useAuthStore";
 
 
 const Home = (props) => {
+	const {calling,subscribeToCalls,unsubscribeFromCalls} = useAuthStore();
+	useEffect(()=>{
+		subscribeToCalls()
+		return () => {unsubscribeFromCalls()}
+	  },[subscribeToCalls,unsubscribeFromCalls])
+
 	useEffect(() => {
 		props.setProgress(20);
 		setTimeout(() => {
@@ -16,8 +24,11 @@ const Home = (props) => {
 	return (
 		
 		<div className='flex rounded-lg overflow-hidden w-full h-screen'>
-			<Sidebar />
-			<MessageContainer /> 
+			{calling ? <CallPage/> : <>
+				<Sidebar />
+				<MessageContainer /> 
+			</>}
+	
 		</div>
 	);
 };

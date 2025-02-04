@@ -9,6 +9,7 @@ import { useGroupStore } from "../../store/useGroupStore";
 import GroupMessageInput from "./GroupMessageInput";
 import { EllipsisVertical } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
+import { useAuthStore } from "../../store/useAuthStore";
 
 const NoChatSelected = () => {
 	return (
@@ -23,7 +24,15 @@ const NoChatSelected = () => {
 };
 
 const MessageContainer = () => {
+	const {setToken,setChannel,fetchToken,onlineUsers,setCalling} = useAuthStore()
 
+    const handleCall = async () => {
+        const channelName = ("channel_" + (Math.random()*30000).toFixed(0));
+        const res = await fetchToken(channelName,0)
+        setCalling(true)
+        setChannel(channelName)
+        setToken(res)
+	}
 	const { selectedUser, setSelectedUser } = useChatStore();
 	const { fetchGroupMessages, sendGroupMessage, selectedGroup, groupMessages, setSelectedGroup } = useGroupStore();
 	const navigate = useNavigate(); // Get navigate function from useNavigate
@@ -61,7 +70,7 @@ const MessageContainer = () => {
 					/>
 				</div>
 				<span className='text-light font-bold'>{selectedUser ? (selectedUser.fullName) : (selectedGroup.name)}</span>
-
+				<button onClick={handleCall}>Call</button>
 				{selectedGroup && <button className="ml-auto" onClick={handleGroupProfile}>
 					<EllipsisVertical />
 				</button>}

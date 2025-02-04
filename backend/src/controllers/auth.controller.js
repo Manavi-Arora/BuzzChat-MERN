@@ -4,6 +4,9 @@ import bcrypt from "bcryptjs";
 import cloudinary from "../lib/cloudinary.js";
 import {OAuth2Client} from "google-auth-library";
 import { getReceiverSocketId, io } from "../lib/socket.js";
+import { createRequire } from "module"; // Import createRequire
+const require = createRequire(import.meta.url); // Create a CommonJS require function
+const { RtcTokenBuilder, RtcRole } = require("agora-access-token");
 
 export const signup = async (req, res) => {
   const { fullName, email, password } = req.body;
@@ -263,7 +266,7 @@ export const updateStatus = async (req, res) => {
     res.status(200).json(updatedUser);
 
   } catch (error) {
-    console.log("Error in updateStatus:", error.message);
+    console.log("Error in updateStatus:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -375,4 +378,31 @@ export const googleLogin= async (req,res)=>{
       console.log("Error in googleLogin controller", error.message)
       res.status(500).json({ messaage: "Internal Server Error"})
   }
+}
+
+export const tokenGenerate = async (req, res) => {
+  const { channelName, uid,userToCallToId } = req.body;
+  const socketId=getReceiverSocketId(userToCallToId)
+
+  if (!channelName) {
+    return res.status(400).json({ error: "Channel name is required" });
+  }
+
+  const role = RtcRole.PUBLISHER;
+  const expirationTimeInSeconds = 3600; // Token valid for 1 hour
+  const currentTimestamp = Math.floor(Date.now() / 1000);
+  const privilegeExpiredTs = currentTimestamp + expirationTimeInSeconds;
+
+  const token = RtcTokenBuilder.buildTokenWithUid(
+    process.env.AGORA_APP_ID,
+    process.env.AGORA_APP_CERTIFICATE,
+    channelName,
+    uid || 0, // Use 0 for dynamic UID assignment
+    role,
+    privilegeExpiredTs
+  );
+
+  io.to(socketId).emit("videoCall",{channelName,token})
+
+  res.json({ token });
 }

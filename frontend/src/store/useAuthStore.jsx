@@ -2,10 +2,11 @@ import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
 import { io } from "socket.io-client";
+import { useChatStore } from "./useChatStore";
 
 const BASE_URL = "http://localhost:3000"
 export const useAuthStore = create((set, get) => ({
-  authUserStatus : null,
+  authUserStatus: null,
   authUser: null,
   isSigningUp: false,
   isLoggingIn: false,
@@ -18,6 +19,14 @@ export const useAuthStore = create((set, get) => ({
   showFriendsOnly: false,
   statusUsers: [],
   statusLoading: false,
+  token: null,
+  calling: false,
+  channel: null,
+
+
+  setToken: (token) => set({ token }),
+  setCalling: (calling) => set({ calling }),
+  setChannel: (channel) => set({ channel }),
 
   checkAuth: async () => {
     try {
@@ -205,6 +214,28 @@ export const useAuthStore = create((set, get) => ({
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to fetch status");
     }
+  },
+  fetchToken: async (channelName, uid) => {
+    const response = await axiosInstance.post("/auth/generate-token",
+      { channelName, uid, userToCallToId: useChatStore.getState().selectedUser._id }
+    );
+    return response.data.token;
+  },
+  subscribeToCalls: () => {
+    const socket = get().socket
+
+    socket?.on("videoCall", (data) => {
+      console.log(data);
+      set({
+        rchannelName: data.channelName,
+        rtoken: data.token,
+        calling: true
+      })
+    });
+  },
+  unsubscribeFromCalls: () => {
+    const socket = get().socket
+    socket?.off("videoCall")
   },
 
 }));
