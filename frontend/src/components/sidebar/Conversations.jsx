@@ -22,7 +22,7 @@ const Conversations = () => {
 	}
 
   return (
-    <div className='py-2 flex flex-col overflow-y-auto'>
+    <div className='py-2 flex flex-col overflow-y-auto h-screen'>
 	 {!showFriendsOnly?users.map((user, idx) => (
 				<Conversation
 					key={user._id}

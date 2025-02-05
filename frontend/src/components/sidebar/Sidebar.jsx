@@ -57,7 +57,7 @@ const Sidebar = () => {
       </div>
       <SearchInput />
       {!isLoading && groups.length > 0 && (
-        <div className="users-cards sm:pl-1.5 mt-2 mb-2 overflow-y-auto min-h-28">
+        <div className="users-cards sm:pl-1.5 mt-2 mb-2 overflow-y-auto h-28">
           <h3 className='text-white font-sans sm:pl-1.5 mt-2 mb-2 sm:text-xl sm:font-bold'>Your Groups</h3>
           {groups.map((group) => {
             const isSelected = selectedGroup && selectedGroup._id === group._id;
@@ -79,7 +79,7 @@ const Sidebar = () => {
                       alt="user avatar"
                     />
                   </div>
-                  <p className={`md:font-semibold text-light ${isSelected ? 'font-bold' : ''} hidden sm:block`}>
+                  <p className={`md:font-semibold text-light ${isSelected ? 'font-bold' : ''} `}>
                     {group.name}
                   </p>
                 </div>

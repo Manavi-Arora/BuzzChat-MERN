@@ -9,7 +9,7 @@ const Message = ({ message }) => {
 
   const [reaction, setReaction] = useState(null);
   //console.log(message);
-  const fromMe = message.senderId._id === authUser?._id;   
+  const fromMe = message.senderId?._id === authUser?._id;   
   //console.log("message.senderId",message.senderId,"authUser?._id",authUser?._id);
   //console.log(fromMe);
  
@@ -44,7 +44,7 @@ const Message = ({ message }) => {
   // Helper function to format the message time
 
   // Extract sender details (fullName, profilePic)
-  const senderName = fromMe ? 'You' : message.senderId.fullName;
+  const senderName = fromMe ? 'You' : message.senderId?.fullName;
   const profilePic = fromMe
     ? authUser.profilePic || "avatar.jpg"
     : message.senderId.profilePic || "avatar.jpg";

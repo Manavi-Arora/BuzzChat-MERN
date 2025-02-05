@@ -16,9 +16,9 @@ export default function Front() {
                 <div className="hero-content flex-col lg:flex-row-reverse">
                     <img
                         src="chatGif.gif"
-                        className="rounded-lg " />
+                        className="rounded-lg w-8/12 lg:w-fit" />
                     <div className="font-sans text-gray-700">
-                        <h1 className="md:text-5xl text-3xl font-extrabold">Welcome to BuzzChat - Where Conversations Come Alive!</h1>
+                        <h1 className="lg:text-5xl text-3xl font-extrabold">Welcome to BuzzChat - Where Conversations Come Alive!</h1>
                         <p className="py-6 md:text-md">
                             Dive into lively chats, make new connections, and stay updated with the buzz. Join the conversation and never miss a moment!
                         </p>

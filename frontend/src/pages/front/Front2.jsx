@@ -15,7 +15,7 @@ function Front2() {
             />
 
             <div className="font-sans text-gray-700">
-                <h1 className="md:text-5xl text-3xl font-extrabold mt-6 lg:mt-0">BuzzChat - Your Ultimate Chat Experience!</h1>
+                <h1 className="lg:text-5xl text-3xl font-extrabold mt-6 lg:mt-0">BuzzChat - Your Ultimate Chat Experience!</h1>
                 <p className="py-6 md:text-md">
                 BuzzChat redefines communication with seamless real-time messaging, high-quality voice/video calls, secure authentication, and multimedia sharing including text and images, all wrapped in customizable themes and end-to-end encryption for privacy, offering an intuitive experience for both one-on-one and group chats, along with easy profile management and personalized settings and suggestions.
 

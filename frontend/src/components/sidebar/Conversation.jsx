@@ -24,8 +24,8 @@ const Conversation = (props) => {
   
           <div className='flex flex-col flex-1 '>
             <div className='flex gap-3 justify-between'>
-              <p className='md:font-semibold text-light hidden sm:block'>{props.user.fullName}</p>
-              <span className='text-xl hidden sm:block'>{props.emoji}</span>
+              <p className='md:font-semibold text-light '>{props.user.fullName}</p>
+              <span className='text-xl '>{props.emoji}</span>
             </div>
           </div>
         </div>

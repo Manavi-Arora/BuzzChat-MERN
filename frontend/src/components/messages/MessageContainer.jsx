@@ -61,8 +61,8 @@ const MessageContainer = () => {
 	);
 	else return (
 
-		<div className='md:min-w-[450px] flex flex-col w-full mt-16' style={{ backgroundColor: "#2c2c2c" }}>
-			<div className='bg-[#2c2c2c] px-4 mb-2 py-2 flex justify-between items-center gap-3 border-b-2 border-black'>
+		<div className='md:min-w-[450px] sm:h-auto h-screen mt-16 flex flex-col w-full ' style={{ backgroundColor: "#2c2c2c" }}>
+			<div className='bg-[#2c2c2c] px-4 mb-2 py-2 flex justify-between items-center gap-3 border-b-2 border-black sticky top-0'>
 				<div className="flex gap-3 items-center">
 				<div className='w-12 h-12 rounded-full avatar'>
 					<img

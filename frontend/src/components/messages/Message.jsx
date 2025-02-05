@@ -7,7 +7,7 @@ const Message = ({ message }) => {
   const { selectedUser, selectedMessage, setSelectedMessage, updateReaction } = useChatStore();
   const [reaction, setReaction] = useState(null);
 
-  const fromMe = message.senderId === authUser?._id;
+  const fromMe = message?.senderId === authUser?._id;
 
   const formattedTime = extractTime(message.createdAt);
   const chatClassName = fromMe ? "chat-end" : "chat-start";
