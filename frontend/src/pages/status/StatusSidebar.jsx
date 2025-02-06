@@ -53,7 +53,7 @@ const StatusSidebar = ({ onUserClick,setProgress}) => {
   };
 
   return (
-    <div className="border-r border-black p-3 flex flex-col sidebar lg:w-1/3 w-auto" style={{ backgroundColor: "#2c2c2c" }}>
+    <div className="border-r border-black p-3 flex flex-col sidebar lg:w-1/3 w-auto h-screen" style={{ backgroundColor: "#2c2c2c" }}>
       {/* Header with New Status button */}
       <div className="flex pb-3 sm:pl-2 items-center justify-between mt-16">
         <h3 className="text-white font-sans sm:text-2xl sm:font-bold">Status</h3>
@@ -110,7 +110,7 @@ const StatusSidebar = ({ onUserClick,setProgress}) => {
                             onClick={() => updateStatus({ profilePic: user.profilePic })}  // Trigger update status on avatar click
                           />
                         </div>
-                        <p className={`text-white ${isHovered ? 'font-bold' : 'font-normal'} hidden sm:block`}>
+                        <p className={`text-white ${isHovered ? 'font-bold' : 'font-normal'}`}>
                           {user.fullName}
                         </p>
                       </div>

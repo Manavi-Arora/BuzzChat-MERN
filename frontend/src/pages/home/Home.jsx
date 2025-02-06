@@ -46,7 +46,7 @@ const Home = (props) => {
 
 			</div>
 
-			<div className="block sm:hidden rounded-lg w-full h-full">
+			<div className="block sm:hidden w-full h-full">
 				{calling ? <CallPage /> : (showContainer ? <MessageContainer /> : <Sidebar />)}
 			</div>
 
