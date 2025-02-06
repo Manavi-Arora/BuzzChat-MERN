@@ -67,9 +67,9 @@ const Message = ({ message }) => {
       )}
 
       {message.text && (
-        <div className={`chat-bubble text-white ${bubbleBgColor} flex justify-center items-center pr-3 gap-6`}>
+        <div className={`chat-bubble text-white ${bubbleBgColor} flex justify-center items-center pr-3 gap-6  w-fit max-w-[calc(100vh/3)] break-words `}>
           {message.text}
-          <span className={`${fromMe ? "text-gray-300" : "text-white" } text-xs`}>
+          <span className={`${fromMe ? "text-gray-300" : "text-white" } text-xs break-keep`}>
             {formattedTime}
           </span>
         </div>

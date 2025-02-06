@@ -77,7 +77,7 @@ const MessageInput = () => {
 
 
       <form className="px-4 my-3" onSubmit={handleSendMessage}>
-        <div className="w-full relative flex-1 flex gap-3 justify-between">
+        <div className="w-full flex-1 flex gap-3 justify-between">
           <input
             type="text"
             className="text-sm rounded-lg block w-2/3 p-2.5 bg-[#383838] outline-none md:w-full"
@@ -87,7 +87,6 @@ const MessageInput = () => {
           />
           <button
             type="submit"
-            className="absolute right-36 sm:right-32 md:right-16 inset-y-0"
             disabled={!text.trim() && !imagePreview}
           >
             <SendHorizontal color="#6c63ff" />

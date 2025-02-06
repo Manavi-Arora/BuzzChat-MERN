@@ -45,7 +45,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className='border-r border-black p-3 flex flex-col sidebar mt-16 lg:w-1/3 w-auto' style={{ backgroundColor: "#2c2c2c" }}>
+    <div className='border-r border-black p-3 flex flex-col sidebar h-[calc(100vh-4rem)] lg:w-1/3 w-auto mt-16' style={{ backgroundColor: "#2c2c2c" }}>
       <div className='flex pb-3 sm:pl-2 items-center justify-between'>
         <h3 className='text-white font-sans sm:text-2xl sm:font-bold'>Chats</h3>
         <div className="flex justify-end items-center gap-2 text-white font-sans">
@@ -57,7 +57,7 @@ const Sidebar = () => {
       </div>
       <SearchInput />
       {!isLoading && groups.length > 0 && (
-        <div className="users-cards sm:pl-1.5 mt-2 mb-2 overflow-y-auto h-28">
+        <div className="users-cards sm:pl-1.5 mt-2 mb-2 overflow-y-auto h-fit max-h-4/6">
           <h3 className='text-white font-sans sm:pl-1.5 mt-2 mb-2 sm:text-xl sm:font-bold'>Your Groups</h3>
           {groups.map((group) => {
             const isSelected = selectedGroup && selectedGroup._id === group._id;

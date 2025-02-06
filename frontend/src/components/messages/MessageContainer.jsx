@@ -12,17 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from "../../store/useAuthStore";
 import { Phone,Video} from "lucide-react";
 
-const NoChatSelected = () => {
-	return (
-		<div className='flex items-center justify-center w-full h-full'>
-			<div className='px-4 text-center sm:text-lg md:text-xl text-black font-semibold flex flex-col items-center gap-2'>
-				<p>Welcome to BuzzChat!🌻</p>
-				<p>Select a chat to start messaging...</p>
-				<MessagesSquare size={48} color="black" className='text-3xl md:text-6xl text-center' />
-			</div>
-		</div>
-	);
-};
+
 
 const MessageContainer = () => {
 	const { setToken, setChannel, fetchToken, onlineUsers, setCalling } = useAuthStore()
@@ -43,12 +33,6 @@ const MessageContainer = () => {
 		navigate('/group-profile');
 	};
 
-	useEffect(() => {
-		return () => {
-			setSelectedUser(null);
-		}
-	}, [setSelectedUser, setSelectedGroup])
-
 	if (!selectedUser && !selectedGroup) return (
 		<div className="flex justify-center items-center flex-col mt-16 w-full" style={{ backgroundColor: "#2c2c2c" }}>
 			<h2 className="font-thin sm:text-lg md:text-xl text-light tracking-wide">
@@ -61,7 +45,7 @@ const MessageContainer = () => {
 	);
 	else return (
 
-		<div className='md:min-w-[450px] sm:h-auto h-screen mt-16 flex flex-col w-full ' style={{ backgroundColor: "#2c2c2c" }}>
+		<div className='md:min-w-[450px] h-[calc(100vh-4rem)] mt-16 flex flex-col w-full ' style={{ backgroundColor: "#2c2c2c" }}>
 			<div className='bg-[#2c2c2c] px-4 mb-2 py-2 flex justify-between items-center gap-3 border-b-2 border-black sticky top-0'>
 				<div className="flex gap-3 items-center">
 				<div className='w-12 h-12 rounded-full avatar'>

@@ -9,13 +9,17 @@ import { useGroupStore } from "../../store/useGroupStore";
 
 const Home = (props) => {
 	const { calling, subscribeToCalls, unsubscribeFromCalls } = useAuthStore();
-	const { selectedUser } = useChatStore();
-	const { selectedGroup } = useGroupStore();
+	const { selectedUser ,setSelectedUser} = useChatStore();
+	const { selectedGroup,setSelectedGroup } = useGroupStore();
 	const showContainer = selectedGroup || selectedUser;
 	useEffect(() => {
 		subscribeToCalls()
 		return () => { unsubscribeFromCalls() }
 	}, [subscribeToCalls, unsubscribeFromCalls])
+	useEffect(()=>{
+		setSelectedGroup(null);
+		setSelectedUser(null);
+    },[])
 
 	useEffect(() => {
 		props.setProgress(20);
@@ -28,9 +32,9 @@ const Home = (props) => {
 	}, []);
 	return (
 		<>
-			<div className='hidden sm:block rounded-lg overflow-hidden w-full'>
+			<div className='hidden sm:block rounded-lg overflow-hidden h-screen w-full'>
 				{calling ? <CallPage /> : (
-					<div className="flex h-screen">
+					<div className="flex h-full">
 					  
 						<Sidebar />
 						<MessageContainer />
@@ -38,7 +42,7 @@ const Home = (props) => {
 				)}
 			</div>
 
-			<div className="block sm:hidden rounded-lg overflow-hidden w-full h-screen">
+			<div className="block sm:hidden rounded-lg w-full h-full">
 				{calling ? <CallPage /> : (showContainer ? <MessageContainer /> : <Sidebar />)}
 			</div>
 
