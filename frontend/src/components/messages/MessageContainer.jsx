@@ -10,12 +10,12 @@ import GroupMessageInput from "./GroupMessageInput";
 import { EllipsisVertical } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from "../../store/useAuthStore";
-import { Phone,Video} from "lucide-react";
+import { Video, ChevronLeft, PhoneCall } from "lucide-react";
 
 
 
 const MessageContainer = () => {
-	const { setToken, setChannel, fetchToken, onlineUsers, setCalling } = useAuthStore()
+	const { setToken, setChannel, fetchToken, fetchVoiceToken, setonlyVoiceCall, onlineUsers, setCalling } = useAuthStore()
 
 	const handleCall = async () => {
 		const channelName = ("channel_" + (Math.random() * 30000).toFixed(0));
@@ -23,7 +23,18 @@ const MessageContainer = () => {
 		setCalling(true)
 		setChannel(channelName)
 		setToken(res)
+		setonlyVoiceCall(false);
 	}
+
+	const handleVoiceCall = async () => {
+		const channelName = ("channel_" + (Math.random() * 30000).toFixed(0));
+		const res = await fetchToken(channelName, 0)
+		setCalling(true)
+		setChannel(channelName)
+		setToken(res)
+		setonlyVoiceCall(true);
+	}
+
 	const { selectedUser, setSelectedUser } = useChatStore();
 	const { fetchGroupMessages, sendGroupMessage, selectedGroup, groupMessages, setSelectedGroup } = useGroupStore();
 	const navigate = useNavigate(); // Get navigate function from useNavigate
@@ -32,6 +43,10 @@ const MessageContainer = () => {
 		// Navigate to the /group-profile route when the button is clicked
 		navigate('/group-profile');
 	};
+	const handleBackClick = () => {
+		setSelectedGroup(null);
+		setSelectedUser(null);
+	}
 
 	if (!selectedUser && !selectedGroup) return (
 		<div className="flex justify-center items-center flex-col mt-16 w-full" style={{ backgroundColor: "#2c2c2c" }}>
@@ -48,20 +63,41 @@ const MessageContainer = () => {
 		<div className='md:min-w-[450px] h-[calc(100vh-4rem)] mt-16 flex flex-col w-full ' style={{ backgroundColor: "#2c2c2c" }}>
 			<div className='bg-[#2c2c2c] px-4 mb-2 py-2 flex justify-between items-center gap-3 border-b-2 border-black sticky top-0'>
 				<div className="flex gap-3 items-center">
-				<div className='w-12 h-12 rounded-full avatar'>
-					<img
-						src={selectedUser ? (selectedUser.profilePic ? selectedUser.profilePic : "avatar.jpg") : (selectedGroup.profilePic ? selectedGroup.profilePic : "group_profile.png")}
-						alt='user avatar'
-						className="rounded-full"
-					/>
+					<div className='w-12 h-12 rounded-full avatar'>
+						<img
+							src={selectedUser ? (selectedUser.profilePic ? selectedUser.profilePic : "avatar.jpg") : (selectedGroup.profilePic ? selectedGroup.profilePic : "group_profile.png")}
+							alt='user avatar'
+							className="rounded-full"
+						/>
+					</div>
+					<span className='text-light font-bold'>{selectedUser ? (selectedUser.fullName) : (selectedGroup.name)}</span>
 				</div>
-				<span className='text-light font-bold'>{selectedUser ? (selectedUser.fullName) : (selectedGroup.name)}</span>
-				</div>
-				{selectedUser ? <button onClick={handleCall}><Video /></button> : null}
-				{selectedGroup && <button className="ml-auto" onClick={handleGroupProfile}>
-					<EllipsisVertical />
-				</button>}
+
+				{/* Buttons for Phone Call and Video */}
+				{selectedUser && (
+					<div className="flex gap-3 ml-auto">
+						<button onClick={handleVoiceCall}>
+							<PhoneCall />
+						</button>
+						<button onClick={handleCall}>
+							<Video />
+						</button>
+					</div>
+				)}
+
+				{/* Group profile button or back button */}
+				{selectedGroup && (
+					<button className="ml-auto" onClick={handleGroupProfile}>
+						<EllipsisVertical />
+					</button>
+				)}
+
+				{/* Back button */}
+				<button className="sm:hidden block" onClick={handleBackClick}>
+					<ChevronLeft />
+				</button>
 			</div>
+
 
 			{selectedUser && <Messages />}
 			{selectedGroup && <GroupMessages />}

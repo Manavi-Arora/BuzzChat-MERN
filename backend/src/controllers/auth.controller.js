@@ -380,10 +380,10 @@ export const googleLogin= async (req,res)=>{
   }
 }
 
-export const tokenGenerate = async (req, res) => {
+export const tokenGenerateVideoCall = async (req, res) => {
   const { channelName, uid,userToCallToId } = req.body;
   const socketId=getReceiverSocketId(userToCallToId)
-
+  console.log(userToCallToId,socketId);
   if (!channelName) {
     return res.status(400).json({ error: "Channel name is required" });
   }
@@ -406,3 +406,4 @@ export const tokenGenerate = async (req, res) => {
 
   res.json({ token });
 }
+

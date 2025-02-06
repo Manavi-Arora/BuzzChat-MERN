@@ -111,7 +111,7 @@ const NewGroupModal = ({ isOpen, onClose, createGroup }) => {
 
                     <div className="flex flex-col flex-1">
                       <div className="flex gap-3 justify-between">
-                        <p className="md:font-semibold text-light hidden sm:block">{user.fullName}</p>
+                        <p className="md:font-semibold text-light">{user.fullName}</p>
                       </div>
                     </div>
                   </div>

@@ -48,6 +48,7 @@ const CallInterface = ({ client, appId, channel, token, setCalling }) => {
     }else {
       setLoading(true)
     }
+    console.log("RemoteUsers",remoteUsers);
   }, [remoteUsers]);
 
   useEffect(() => {

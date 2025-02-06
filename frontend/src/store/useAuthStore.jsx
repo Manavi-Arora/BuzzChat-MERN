@@ -22,11 +22,13 @@ export const useAuthStore = create((set, get) => ({
   token: null,
   calling: false,
   channel: null,
+  onlyVoiceCall : null,
 
 
   setToken: (token) => set({ token }),
   setCalling: (calling) => set({ calling }),
   setChannel: (channel) => set({ channel }),
+  setonlyVoiceCall: (onlyVoiceCall) => set({ onlyVoiceCall }),
 
   checkAuth: async () => {
     try {

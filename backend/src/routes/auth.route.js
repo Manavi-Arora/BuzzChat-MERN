@@ -1,5 +1,5 @@
 import express from "express";
-import { checkAuth, login, logout, signup, updateProfile, updateBio,updateFriends, fetchFriends,updateStatus,fetchUsersWithStatus,fetchAuthUserStatus,googleLogin,tokenGenerate} from "../controllers/auth.controller.js";
+import { checkAuth, login, logout, signup, updateProfile, updateBio,updateFriends, fetchFriends,updateStatus,fetchUsersWithStatus,fetchAuthUserStatus,googleLogin,tokenGenerateVideoCall} from "../controllers/auth.controller.js";
 import { protectRoute } from "../middleware/auth.middleware.js";
 const router = express.Router();
 
@@ -7,7 +7,7 @@ router.post("/signup", signup);
 router.post("/login", login);
 router.post("/logout", logout);
 router.post("/google-login",googleLogin);
-router.post("/generate-token",tokenGenerate);
+router.post("/generate-token",tokenGenerateVideoCall);
 
 router.put("/update-profile", protectRoute, updateProfile);
 router.put("/update-status", protectRoute, updateStatus);

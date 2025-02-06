@@ -5,21 +5,23 @@ import CallPage from "../call/callPage";
 import { useAuthStore } from "../../store/useAuthStore";
 import { useChatStore } from "../../store/useChatStore";
 import { useGroupStore } from "../../store/useGroupStore";
+import VoiceCallPage from "../call/voiceCallPage";
 
 
 const Home = (props) => {
-	const { calling, subscribeToCalls, unsubscribeFromCalls } = useAuthStore();
-	const { selectedUser ,setSelectedUser} = useChatStore();
-	const { selectedGroup,setSelectedGroup } = useGroupStore();
+	const { setCalling,calling, subscribeToCalls, unsubscribeFromCalls, onlyVoiceCall } = useAuthStore();
+	const { selectedUser, setSelectedUser } = useChatStore();
+	const { selectedGroup, setSelectedGroup } = useGroupStore();
 	const showContainer = selectedGroup || selectedUser;
 	useEffect(() => {
 		subscribeToCalls()
 		return () => { unsubscribeFromCalls() }
 	}, [subscribeToCalls, unsubscribeFromCalls])
-	useEffect(()=>{
+	useEffect(() => {
 		setSelectedGroup(null);
 		setSelectedUser(null);
-    },[])
+		setCalling(false);
+	}, [])
 
 	useEffect(() => {
 		props.setProgress(20);
@@ -32,14 +34,16 @@ const Home = (props) => {
 	}, []);
 	return (
 		<>
-			<div className='hidden sm:block rounded-lg overflow-hidden h-screen w-full'>
-				{calling ? <CallPage /> : (
+			<div className='hidden sm:block overflow-hidden h-screen w-full'>
+				{calling ? (
+					onlyVoiceCall ? <VoiceCallPage /> : <CallPage />
+				) : (
 					<div className="flex h-full">
-					  
 						<Sidebar />
 						<MessageContainer />
 					</div>
 				)}
+
 			</div>
 
 			<div className="block sm:hidden rounded-lg w-full h-full">
